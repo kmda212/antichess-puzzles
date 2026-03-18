@@ -1,5 +1,7 @@
 node_modules/
 docs/screenshots/
-*.ps1
 load_samples.html
 ux_mockup_*.html
+test_*.js
+test_out.txt
+screenshot.js
