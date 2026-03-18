@@ -1,0 +1,55 @@
+{
+  "id": "",
+  "title": "king1",
+  "description": "",
+  "difficulty": "medium",
+  "startFEN": "2R5/8/8/1K6/4k3/8/8/8 b - - 0 1",
+  "solution": [
+    {
+      "uci": "e4d5",
+      "san": "Kd5",
+      "fenAfter": "2R5/8/8/1K1k4/8/8/8/8 w - - 1 2"
+    },
+    {
+      "uci": "b5a6",
+      "san": "Ka6",
+      "fenAfter": "2R5/8/K7/3k4/8/8/8/8 b - - 2 2"
+    },
+    {
+      "uci": "d5c5",
+      "san": "Kc5",
+      "fenAfter": "2R5/8/K7/2k5/8/8/8/8 w - - 3 3"
+    }
+  ],
+  "solutionTree": {
+    "anyMove": false,
+    "options": [
+      {
+        "uci": "e4d5",
+        "san": "Kd5",
+        "next": {
+          "anyMove": true,
+          "options": [
+            {
+              "uci": "b5a6",
+              "san": "Ka6",
+              "next": {
+                "anyMove": false,
+                "options": [
+                  {
+                    "uci": "d5c5",
+                    "san": "Kc5",
+                    "next": {
+                      "anyMove": false,
+                      "options": []
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

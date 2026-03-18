@@ -1,0 +1,55 @@
+{
+  "id": "puzzle_sample_002",
+  "title": "Knight's Two-Step",
+  "description": "White knight on f4, black pawn on b2, black king on a1. White moves first: Nd3, then no matter what black does, white takes the pawn on b2! Demonstrates the 'any move' concept — black's response does not change the outcome.",
+  "difficulty": "beginner",
+  "startFEN": "8/8/8/8/5N2/8/1p6/k7 w - - 0 1",
+  "solution": [
+    {
+      "uci": "f4d3",
+      "san": "Nd3",
+      "fenAfter": "8/8/8/8/8/3N4/1p6/k7 b - - 1 1"
+    },
+    {
+      "uci": "a1a2",
+      "san": "Ka2",
+      "fenAfter": "8/8/8/8/8/3N4/kp6/8 w - - 2 2"
+    },
+    {
+      "uci": "d3b2",
+      "san": "Nxb2",
+      "fenAfter": "8/8/8/8/8/8/kN6/8 b - - 0 2"
+    }
+  ],
+  "solutionTree": {
+    "anyMove": false,
+    "options": [
+      {
+        "uci": "f4d3",
+        "san": "Nd3",
+        "next": {
+          "anyMove": true,
+          "options": [
+            {
+              "uci": "a1a2",
+              "san": "Ka2",
+              "next": {
+                "anyMove": false,
+                "options": [
+                  {
+                    "uci": "d3b2",
+                    "san": "Nxb2",
+                    "next": {
+                      "anyMove": false,
+                      "options": []
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

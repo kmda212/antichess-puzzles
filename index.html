@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anti-Chess Puzzle Creator</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<!-- ── Header ─────────────────────────────────────────────────────────── -->
+<header>
+  <div>
+    <h1>♟ Anti-Chess Puzzle Creator</h1>
+    <div class="subtitle">Create · Record · Save · Review</div>
+  </div>
+  <div class="spacer"></div>
+  <a href="solve.html" style="color:var(--accent);font-size:0.82rem;font-weight:600;text-decoration:none;margin-right:8px">
+    ▶ Puzzle Solver →
+  </a>
+  <span id="modeBadge" class="mode-badge mode-setup">⚙ Setup Mode</span>
+</header>
+
+<!-- ── Layout ──────────────────────────────────────────────────────────── -->
+<div class="layout">
+
+  <!-- ── LEFT SIDEBAR ─────────────────────────────────────────────────── -->
+  <aside class="sidebar">
+
+    <!-- Workflow buttons -->
+    <div class="sidebar-section">
+      <h3>Workflow</h3>
+      <button id="btnNewPuzzle"   class="btn btn-primary">＋ New Puzzle</button>
+      <button id="btnStartRecord" class="btn btn-warning" disabled>⏺ Start Recording</button>
+      <button id="btnUndoMove"    class="btn btn-secondary" disabled>↩ Undo Last Move</button>
+      <button id="btnMarkAnyMove" class="btn btn-secondary" disabled title="Mark the next move you play as 'any move accepted' — the solver will accept any legal move at this step">⚡ Any Move Step</button>
+      <button id="btnStopRecord"  class="btn btn-secondary" disabled>⏹ Stop Recording</button>
+    </div>
+
+    <!-- Setup tools -->
+    <div class="sidebar-section" id="setupPanel">
+      <h3>Setup Board</h3>
+      <button id="btnResetStart" class="btn btn-secondary">⟳ Reset to Start Position</button>
+      <button id="btnClearBoard" class="btn btn-danger">✕ Clear Board</button>
+
+      <div style="margin-top:12px">
+        <div class="palette-label">White Pieces (click to select, then click board)</div>
+        <div class="piece-palette">
+          <span class="palette-piece selected" data-color="w" data-piece="p" data-key="wp"><img src="pieces/wP.svg" style="width:28px;height:28px"></span>
+          <span class="palette-piece"          data-color="w" data-piece="n" data-key="wn"><img src="pieces/wN.svg" style="width:28px;height:28px"></span>
+          <span class="palette-piece"          data-color="w" data-piece="b" data-key="wb"><img src="pieces/wB.svg" style="width:28px;height:28px"></span>
+          <span class="palette-piece"          data-color="w" data-piece="r" data-key="wr"><img src="pieces/wR.svg" style="width:28px;height:28px"></span>
+          <span class="palette-piece"          data-color="w" data-piece="q" data-key="wq"><img src="pieces/wQ.svg" style="width:28px;height:28px"></span>
+          <span class="palette-piece"          data-color="w" data-piece="k" data-key="wk"><img src="pieces/wK.svg" style="width:28px;height:28px"></span>
+        </div>
+        <div class="palette-label" style="margin-top:6px">Black Pieces</div>
+        <div class="piece-palette">
+          <span class="palette-piece" data-color="b" data-piece="p" data-key="bp"><img src="pieces/bP.svg" style="width:28px;height:28px"></span>
+          <span class="palette-piece" data-color="b" data-piece="n" data-key="bn"><img src="pieces/bN.svg" style="width:28px;height:28px"></span>
+          <span class="palette-piece" data-color="b" data-piece="b" data-key="bb"><img src="pieces/bB.svg" style="width:28px;height:28px"></span>
+          <span class="palette-piece" data-color="b" data-piece="r" data-key="br"><img src="pieces/bR.svg" style="width:28px;height:28px"></span>
+          <span class="palette-piece" data-color="b" data-piece="q" data-key="bq"><img src="pieces/bQ.svg" style="width:28px;height:28px"></span>
+          <span class="palette-piece" data-color="b" data-piece="k" data-key="bk"><img src="pieces/bK.svg" style="width:28px;height:28px"></span>
+        </div>
+        <div class="palette-label" style="margin-top:6px">Erase (or right-click any square)</div>
+        <div class="piece-palette">
+          <span class="palette-piece eraser" id="eraserBtn" data-key="eraser">✕</span>
+        </div>
+      </div>
+
+      <div style="margin-top:12px">
+        <div class="palette-label">Side to move first</div>
+        <div class="turn-selector">
+          <div id="turnW" class="turn-btn active">⬜ White</div>
+          <div id="turnB" class="turn-btn">⬛ Black</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Solution steps -->
+    <div class="sidebar-section">
+      <h3>Solution Moves</h3>
+      <div id="captureWarn" class="capture-warning">
+        ⚠️ Captures are mandatory in Anti-Chess!
+      </div>
+      <!-- Branch selector: shown when multiple paths exist at current node -->
+      <div id="branchSelector" class="branch-selector" style="display:none">
+        <div class="branch-label">⑂ Multiple paths — choose:</div>
+        <div id="branchOptions" class="branch-options"></div>
+      </div>
+      <ul id="solutionList" class="solution-list"></ul>
+    </div>
+
+    <!-- View navigation (shown only in VIEW mode) -->
+    <div class="sidebar-section" id="viewNav" style="display:none">
+      <h3>Navigate Solution</h3>
+      <div class="nav-btns">
+        <button id="btnFirst" class="btn btn-secondary btn-sm">⏮</button>
+        <button id="btnPrev"  class="btn btn-secondary btn-sm">◀</button>
+        <button id="btnNext"  class="btn btn-warning   btn-sm">▶</button>
+        <button id="btnLast"  class="btn btn-secondary btn-sm">⏭</button>
+      </div>
+      <button id="btnAddVariation" class="btn btn-secondary" style="margin-top:8px" title="Record an alternative path from the current board position">⊕ Add Variation from Here</button>
+    </div>
+
+  </aside>
+
+  <!-- ── CENTER: Board ──────────────────────────────────────────────────── -->
+  <main class="board-area">
+    <div class="board-wrap">
+
+      <div class="board-row-wrap">
+        <!-- The board (coords rendered inside squares) -->
+        <div class="board-container">
+          <div id="board"></div>
+        </div>
+      </div>
+
+      <!-- Status bar under board -->
+      <div style="width:600px; margin-top:8px">
+        <div id="statusBar" class="status-bar info">Welcome!</div>
+        <div id="fenBox" class="fen-box"></div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ── RIGHT PANEL ───────────────────────────────────────────────────── -->
+  <aside class="right-panel">
+
+    <!-- Puzzle metadata -->
+    <div class="right-section">
+      <h3>Puzzle Details</h3>
+      <div class="meta-form">
+        <label>Title</label>
+        <input id="puzzleTitle" type="text" placeholder="e.g. Pin and capture in 3" />
+        <label>Description</label>
+        <textarea id="puzzleDesc" rows="3" placeholder="Optional description or hints..."></textarea>
+        <label>Difficulty</label>
+        <select id="puzzleDiff">
+          <option value="beginner">Beginner</option>
+          <option value="easy">Easy</option>
+          <option value="medium" selected>Medium</option>
+          <option value="hard">Hard</option>
+          <option value="expert">Expert</option>
+        </select>
+      </div>
+      <div style="margin-top:10px">
+        <button id="btnSavePuzzle"   class="btn btn-primary">💾 Save Puzzle</button>
+        <button id="btnDeletePuzzle" class="btn btn-danger">🗑 Delete Puzzle</button>
+      </div>
+    </div>
+
+    <!-- File operations -->
+    <div class="right-section">
+      <h3>Import / Export</h3>
+      <button id="btnLoadFile"   class="btn btn-secondary">📂 Load Puzzles (JSON)</button>
+      <button id="btnExportJSON" class="btn btn-secondary">📤 Export All (JSON)</button>
+      <button id="btnExportPGN"  class="btn btn-secondary">📄 Export Current (PGN)</button>
+      <input  id="fileInput" type="file" accept=".json" style="display:none" />
+    </div>
+
+    <!-- Saved puzzles list -->
+    <div class="right-section" style="flex:1">
+      <h3>Saved Puzzles</h3>
+      <ul id="puzzleList" class="puzzle-list"></ul>
+    </div>
+
+    <!-- Anti-chess rules reminder -->
+    <div class="right-section">
+      <h3>Anti-Chess Rules</h3>
+      <ul style="font-size:0.75rem;color:var(--muted);line-height:1.7;padding-left:14px">
+        <li>Captures are <strong style="color:var(--accent)">mandatory</strong></li>
+        <li>Choose which capture to make</li>
+        <li>King has no special status</li>
+        <li>No castling</li>
+        <li>En passant applies</li>
+        <li>Goal: lose all your pieces</li>
+        <li>No pieces / no legal moves = <strong style="color:#2ecc71">WIN</strong></li>
+      </ul>
+    </div>
+
+  </aside>
+
+</div><!-- /.layout -->
+
+<!-- ── Promotion Modal ──────────────────────────────────────────────────── -->
+<div id="promoModal" class="modal-overlay">
+  <div class="modal">
+    <h2>Choose Promotion Piece</h2>
+    <div class="promo-choices"></div>
+    <p style="font-size:0.75rem;color:var(--muted);margin-top:8px">
+      Click a piece to promote. In anti-chess, king promotion is allowed.
+    </p>
+  </div>
+</div>
+
+<!-- ── Toast container ──────────────────────────────────────────────────── -->
+<div id="toastContainer" class="toast-container"></div>
+
+<!-- ── Scripts ──────────────────────────────────────────────────────────── -->
+<script src="js/antichess.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

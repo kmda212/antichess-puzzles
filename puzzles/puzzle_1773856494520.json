@@ -1,0 +1,58 @@
+{
+  "id": "puzzle_1773856494520",
+  "title": "Untitled Puzzle",
+  "description": "",
+  "difficulty": "medium",
+  "startFEN": "8/3B4/8/6r1/8/8/8/8 b - - 0 1",
+  "solution": [
+    {
+      "uci": "g5f5",
+      "san": "Rf5",
+      "fenAfter": "8/3B4/8/5r2/8/8/8/8 w - - 1 2"
+    },
+    {
+      "uci": "d7f5",
+      "san": "Bxf5",
+      "fenAfter": "8/8/8/5B2/8/8/8/8 b - - 0 2"
+    }
+  ],
+  "solutionTree": {
+    "anyMove": false,
+    "options": [
+      {
+        "uci": "g5f5",
+        "san": "Rf5",
+        "next": {
+          "anyMove": false,
+          "options": [
+            {
+              "uci": "d7f5",
+              "san": "Bxf5",
+              "next": {
+                "anyMove": false,
+                "options": []
+              }
+            }
+          ]
+        }
+      },
+      {
+        "uci": "g5b5",
+        "san": "Rb5",
+        "next": {
+          "anyMove": false,
+          "options": [
+            {
+              "uci": "d7b5",
+              "san": "Bxb5",
+              "next": {
+                "anyMove": false,
+                "options": []
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

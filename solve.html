@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anti-Chess Puzzle Solver</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    /* ── Solver-specific overrides & extras ─────────────────────────── */
+
+    /* Puzzle selector bar */
+    .selector-bar {
+      background: var(--panel);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .selector-bar label {
+      font-size: 0.82rem;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    .selector-bar select {
+      flex: 1;
+      min-width: 260px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text);
+      padding: 7px 12px;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+    .selector-bar select:focus { outline: none; border-color: var(--accent2); }
+    .selector-bar .btn { width: auto; margin-bottom: 0; }
+
+    /* ── Left sidebar ─────────────────────────────────────────────── */
+    .sidebar { width: 240px; }
+
+    /* Puzzle info card */
+    .puzzle-info-card {
+      padding: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .puzzle-info-card .pi-label {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .puzzle-info-card .pi-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+    .pi-meta {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+    .pi-badge {
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      border-radius: 12px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+    .pi-badge.diff-beginner { border-color: #629924; color: #8fcc44; }
+    .pi-badge.diff-easy     { border-color: #629924; color: #8fcc44; }
+    .pi-badge.diff-medium   { border-color: #c0a000; color: #e8c800; }
+    .pi-badge.diff-hard     { border-color: #c05000; color: #e87030; }
+    .pi-badge.diff-expert   { border-color: #c02020; color: #e86060; }
+    .pi-desc {
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    /* Progress */
+    .progress-section {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .progress-track {
+      height: 6px;
+      background: var(--card);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), #8fcc44);
+      border-radius: 3px;
+      width: 0%;
+      transition: width 0.4s ease;
+    }
+
+    /* Move history */
+    .move-history-section {
+      padding: 14px 16px;
+      flex: 1;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .move-history-section h3 {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    #moveList {
+      list-style: none;
+      overflow-y: auto;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    #moveList li {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 8px;
+      border-radius: 4px;
+      font-size: 0.83rem;
+      font-family: 'Courier New', monospace;
+    }
+    #moveList li.move-user { background: rgba(98,153,36,0.15); border-left: 3px solid var(--accent); }
+    #moveList li.move-auto { background: rgba(60,100,160,0.15); border-left: 3px solid #3a6aaa; }
+    .mv-num { color: var(--muted); font-size: 0.72rem; min-width: 24px; }
+    .mv-san { flex: 1; color: #fff; }
+    .mv-tag { font-size: 0.9rem; }
+
+    /* Controls section */
+    .controls-section {
+      padding: 14px 16px;
+      border-top: 1px solid var(--border);
+    }
+    .controls-section h3 {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    /* ── Right panel ──────────────────────────────────────────────── */
+    .right-panel { width: 240px; }
+
+    /* How to play card */
+    .how-to-play {
+      padding: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .how-to-play h3 {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+    .htp-step {
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+      margin-bottom: 8px;
+      font-size: 0.78rem;
+      color: var(--text);
+      line-height: 1.4;
+    }
+    .htp-num {
+      background: var(--accent);
+      color: #fff;
+      border-radius: 50%;
+      width: 18px; height: 18px;
+      font-size: 0.65rem;
+      font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* Rules reminder */
+    .rules-card {
+      padding: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .rules-card h3 {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .rules-card ul {
+      list-style: none;
+      font-size: 0.75rem;
+      line-height: 1.8;
+    }
+    .rules-card li::before {
+      content: '♟ ';
+      color: var(--accent);
+    }
+
+    /* Keyboard legend */
+    .legend-card {
+      padding: 16px;
+    }
+    .legend-card h3 {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .swatch {
+      width: 16px; height: 16px;
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+    .sw-selected { background: rgba(20,85,30,0.7); border: 1px solid #629924; }
+    .sw-lastmove { background: rgba(246,235,114,0.7); border: 1px solid #c0a000; }
+    .sw-dot      { background: rgba(20,85,0,0.5); border-radius: 50%; }
+    .sw-capture  { background: transparent; border: 3px solid rgba(204,0,0,0.7); border-radius: 50%; width: 14px; height: 14px; }
+    .sw-user     { background: rgba(98,153,36,0.3); border-left: 3px solid var(--accent); }
+    .sw-auto     { background: rgba(60,100,160,0.3); border-left: 3px solid #3a6aaa; }
+
+    /* ── Board area extras ────────────────────────────────────────── */
+    .board-area { position: relative; }
+
+    /* Error flash */
+    #errorFlash {
+      position: absolute;
+      top: -44px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #c02020;
+      color: #fff;
+      border-radius: var(--radius);
+      padding: 8px 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      white-space: nowrap;
+      z-index: 20;
+      display: none;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+      animation: fadeInDown 0.2s ease;
+    }
+    #errorFlash.visible { display: block; }
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateX(-50%) translateY(-6px); }
+      to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+    }
+
+    /* Board shake on wrong move */
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      20%     { transform: translateX(-6px); }
+      40%     { transform: translateX(6px); }
+      60%     { transform: translateX(-4px); }
+      80%     { transform: translateX(4px); }
+    }
+    .board-shake { animation: shake 0.4s ease; }
+
+    /* Hint flash */
+    @keyframes hintPulse {
+      0%,100% { box-shadow: none; }
+      50%     { box-shadow: inset 0 0 0 4px #c0a000; }
+    }
+    .hint-flash { animation: hintPulse 0.5s ease 2; }
+
+    /* Capture warning */
+    .capture-warning {
+      background: rgba(192,0,0,0.15);
+      border: 1px solid #c02020;
+      border-radius: var(--radius);
+      padding: 6px 10px;
+      font-size: 0.78rem;
+      color: #e87070;
+      margin-bottom: 8px;
+      display: none;
+    }
+    .capture-warning.visible { display: block; }
+
+    /* ── Success overlay ──────────────────────────────────────────── */
+    #successOverlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(22, 21, 18, 0.88);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 30;
+      border-radius: 4px;
+      backdrop-filter: blur(3px);
+    }
+    #successOverlay.visible { display: flex; }
+
+    .success-card {
+      background: var(--panel);
+      border: 1px solid var(--accent);
+      border-radius: 12px;
+      padding: 36px 40px;
+      text-align: center;
+      box-shadow: 0 0 40px rgba(98,153,36,0.3), 0 8px 32px rgba(0,0,0,0.7);
+      max-width: 340px;
+    }
+    .success-emoji {
+      font-size: 3.5rem;
+      margin-bottom: 12px;
+      display: block;
+      animation: popIn 0.4s cubic-bezier(0.175,0.885,0.32,1.275) both;
+    }
+    @keyframes popIn {
+      from { transform: scale(0.5); opacity: 0; }
+      to   { transform: scale(1);   opacity: 1; }
+    }
+    .success-card h2 {
+      font-size: 1.5rem;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .success-card p {
+      font-size: 0.88rem;
+      color: var(--muted);
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+    .success-actions {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+    }
+    .success-actions .btn { width: auto; }
+
+    /* Stars decoration */
+    .stars {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+    .star {
+      font-size: 1.6rem;
+      animation: starPop 0.3s ease both;
+    }
+    .star:nth-child(1) { animation-delay: 0.1s; }
+    .star:nth-child(2) { animation-delay: 0.25s; }
+    .star:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes starPop {
+      from { transform: scale(0) rotate(-30deg); opacity: 0; }
+      to   { transform: scale(1) rotate(0deg);   opacity: 1; }
+    }
+
+    /* ── Board status row (below board) ──────────────────────────── */
+    .board-footer {
+      width: 600px;
+      margin-top: 8px;
+    }
+
+    /* ── Empty state ─────────────────────────────────────────────── */
+    .empty-state {
+      padding: 32px 16px;
+      text-align: center;
+      color: var(--muted);
+    }
+    .empty-state .es-icon { font-size: 2.5rem; margin-bottom: 10px; }
+    .empty-state p { font-size: 0.82rem; line-height: 1.6; }
+    .empty-state a { color: var(--accent); }
+  </style>
+</head>
+<body>
+
+<!-- ── Header ─────────────────────────────────────────────────────────── -->
+<header>
+  <div>
+    <h1>♟ Anti-Chess Puzzle Solver</h1>
+    <div class="subtitle">Test your Anti-Chess skills — find the winning sequence!</div>
+  </div>
+  <div class="spacer"></div>
+  <a href="index.html" style="color:var(--muted);font-size:0.82rem;text-decoration:none">
+    ← Puzzle Creator
+  </a>
+</header>
+
+<!-- ── Puzzle selector bar ─────────────────────────────────────────────── -->
+<div class="selector-bar">
+  <label for="puzzleSelect">Select Puzzle:</label>
+  <select id="puzzleSelect"></select>
+  <button id="loadBtn" class="btn btn-primary btn-sm" style="padding:7px 18px">▶ Load</button>
+</div>
+
+<!-- ── Layout ──────────────────────────────────────────────────────────── -->
+<div class="layout">
+
+  <!-- ── LEFT SIDEBAR ──────────────────────────────────────────────────── -->
+  <aside class="sidebar">
+
+    <!-- Puzzle info -->
+    <div class="puzzle-info-card">
+      <div class="pi-label">Puzzle</div>
+      <div class="pi-title" id="puzzleTitle">No puzzle loaded</div>
+      <div class="pi-meta">
+        <span class="pi-badge" id="puzzleDiff">—</span>
+        <span class="pi-badge" id="puzzleMoves">— moves</span>
+      </div>
+      <div class="pi-desc" id="puzzleDesc">Select a puzzle from the dropdown above to begin.</div>
+    </div>
+
+    <!-- Progress -->
+    <div class="progress-section">
+      <div class="progress-header">
+        <span>Progress</span>
+        <span id="progressLabel">0 / 0 moves</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+    </div>
+
+    <!-- Capture warning -->
+    <div style="padding: 8px 16px 0">
+      <div id="captureWarn" class="capture-warning">
+        ⚠️ Capture is mandatory in Anti-Chess!
+      </div>
+    </div>
+
+    <!-- Move history -->
+    <div class="move-history-section">
+      <h3>Move History</h3>
+      <ul id="moveList"></ul>
+    </div>
+
+    <!-- Controls -->
+    <div class="controls-section">
+      <h3>Controls</h3>
+      <button id="btnHint"  class="btn btn-warning">💡 Hint</button>
+      <button id="btnReset" class="btn btn-secondary">↺ Reset Puzzle</button>
+    </div>
+
+  </aside>
+
+  <!-- ── CENTER: Board ──────────────────────────────────────────────────── -->
+  <main class="board-area" style="position:relative">
+
+    <!-- Error flash -->
+    <div id="errorFlash">❌ Wrong move! Try again.</div>
+
+    <div class="board-wrap">
+      <div class="board-row-wrap">
+        <div class="board-container" style="position:relative">
+          <div id="board"></div>
+
+          <!-- Success overlay sits over the board -->
+          <div id="successOverlay">
+            <div class="success-card">
+              <span class="success-emoji">🏆</span>
+              <div class="stars">
+                <span class="star">⭐</span>
+                <span class="star">⭐</span>
+                <span class="star">⭐</span>
+              </div>
+              <h2 id="successTitle">Puzzle Solved!</h2>
+              <p id="successDetail">Well done!</p>
+              <div class="success-actions">
+                <button id="btnPlayAgain" class="btn btn-secondary" style="flex:1">↺ Play Again</button>
+                <button id="btnNextPuzzle" class="btn btn-primary" style="flex:1">Next ▶</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Board footer -->
+      <div class="board-footer">
+        <div id="statusBar" class="status-bar info">
+          Select a puzzle from the dropdown above to begin.
+        </div>
+        <div id="fenBox" class="fen-box"></div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ── RIGHT PANEL ───────────────────────────────────────────────────── -->
+  <aside class="right-panel">
+
+    <!-- How to play -->
+    <div class="how-to-play">
+      <h3>How to Play</h3>
+      <div class="htp-step">
+        <span class="htp-num">1</span>
+        <span>Select a puzzle from the dropdown and click <strong>▶ Load</strong></span>
+      </div>
+      <div class="htp-step">
+        <span class="htp-num">2</span>
+        <span>Click a piece of <strong>your color</strong> to select it</span>
+      </div>
+      <div class="htp-step">
+        <span class="htp-num">3</span>
+        <span>Legal moves appear as <strong>dots</strong> (moves) and <strong>red rings</strong> (captures)</span>
+      </div>
+      <div class="htp-step">
+        <span class="htp-num">4</span>
+        <span>Click the target square to make your move</span>
+      </div>
+      <div class="htp-step">
+        <span class="htp-num">5</span>
+        <span>The <strong>opponent replies automatically</strong> if your move is correct</span>
+      </div>
+      <div class="htp-step">
+        <span class="htp-num">6</span>
+        <span>Wrong move? You'll see an error — try a different square</span>
+      </div>
+      <div class="htp-step">
+        <span class="htp-num">7</span>
+        <span>Solve all moves to win! 🏆</span>
+      </div>
+    </div>
+
+    <!-- Board legend -->
+    <div class="legend-card">
+      <h3>Board Legend</h3>
+      <div class="legend-item"><div class="swatch sw-selected"></div> Your selected piece</div>
+      <div class="legend-item"><div class="swatch sw-lastmove"></div> Last move played</div>
+      <div class="legend-item"><div class="swatch sw-dot"></div> Legal move target</div>
+      <div class="legend-item"><div class="swatch sw-capture"></div> Capturable piece</div>
+      <div class="legend-item" style="margin-top:8px"><div class="swatch sw-user" style="width:30px;height:14px;border-radius:3px"></div> Your moves</div>
+      <div class="legend-item"><div class="swatch sw-auto" style="width:30px;height:14px;border-radius:3px"></div> Opponent moves</div>
+    </div>
+
+    <!-- Anti-chess rules -->
+    <div class="rules-card">
+      <h3>Anti-Chess Rules</h3>
+      <ul>
+        <li>Captures are <strong>mandatory</strong></li>
+        <li>Choose which capture to make</li>
+        <li>King has no special status</li>
+        <li>No castling</li>
+        <li>Goal: lose all your pieces</li>
+        <li>No pieces / moves = <strong style="color:#629924">WIN</strong></li>
+      </ul>
+    </div>
+
+  </aside>
+
+</div><!-- /.layout -->
+
+<!-- ── Promotion modal ──────────────────────────────────────────────────── -->
+<div id="promoModal" class="modal-overlay">
+  <div class="modal">
+    <h2>Choose Promotion Piece</h2>
+    <div class="promo-choices"></div>
+    <p style="font-size:0.75rem;color:var(--muted);margin-top:8px">
+      King promotion is allowed in Anti-Chess!
+    </p>
+  </div>
+</div>
+
+<!-- ── Toast container ──────────────────────────────────────────────────── -->
+<div id="toastContainer" class="toast-container"></div>
+
+<!-- ── Scripts ──────────────────────────────────────────────────────────── -->
+<script src="js/antichess.js"></script>
+<script src="js/solver.js"></script>
+</body>
+</html>

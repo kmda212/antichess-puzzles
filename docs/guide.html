@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anti-Chess Puzzle Creator — User Guide</title>
+  <style>
+    /* ── Base ───────────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #161512;
+      --panel:    #1c1a17;
+      --card:     #272522;
+      --border:   #3d3a35;
+      --text:     #d4c5b0;
+      --muted:    #888070;
+      --accent:   #629924;
+      --gold:     #c0a000;
+      --red:      #c0392b;
+      --radius:   8px;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+    }
+
+    /* ── Layout ─────────────────────────────────────────────────────── */
+    .page-wrap {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* ── Sidebar TOC ─────────────────────────────────────────────────── */
+    .toc {
+      width: 260px;
+      flex-shrink: 0;
+      background: var(--panel);
+      border-right: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      padding: 24px 0;
+    }
+    .toc-title {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--muted);
+      padding: 0 20px 12px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 8px;
+    }
+    .toc a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 20px;
+      color: var(--text);
+      text-decoration: none;
+      font-size: 0.83rem;
+      transition: background 0.15s, color 0.15s;
+      border-left: 3px solid transparent;
+    }
+    .toc a:hover       { background: var(--card); color: #fff; }
+    .toc a.active      { border-left-color: var(--accent); color: #fff; background: var(--card); }
+    .toc a .step-num   { background: var(--border); border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; flex-shrink: 0; }
+    .toc-section-label {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--muted);
+      padding: 14px 20px 4px;
+    }
+    .toc a.back-link { color: var(--accent); font-weight: 600; }
+
+    /* ── Main content ────────────────────────────────────────────────── */
+    .content {
+      flex: 1;
+      max-width: 960px;
+      padding: 48px 56px;
+      overflow-y: auto;
+    }
+
+    /* ── Hero ────────────────────────────────────────────────────────── */
+    .hero {
+      background: linear-gradient(135deg, #1c1a17 0%, #272522 100%);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 36px 40px;
+      margin-bottom: 48px;
+    }
+    .hero h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    .hero h1 span { color: var(--accent); }
+    .hero p {
+      color: var(--muted);
+      font-size: 1rem;
+      max-width: 620px;
+    }
+    .hero-meta {
+      display: flex;
+      gap: 24px;
+      margin-top: 20px;
+    }
+    .hero-meta .badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.8rem;
+      color: var(--text);
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 5px 12px;
+    }
+
+    /* ── Quick-reference card ────────────────────────────────────────── */
+    .quick-ref {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px 28px;
+      margin-bottom: 48px;
+    }
+    .quick-ref h2 { font-size: 1rem; margin-bottom: 14px; color: var(--gold); }
+    .qr-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 10px;
+    }
+    .qr-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px 12px;
+      background: var(--card);
+      border-radius: var(--radius);
+      font-size: 0.82rem;
+    }
+    .qr-item .icon { font-size: 1.1rem; }
+    .qr-item strong { display: block; color: #fff; margin-bottom: 2px; font-size: 0.8rem; }
+    .qr-item span   { color: var(--muted); font-size: 0.75rem; }
+
+    /* ── Antichess rules box ─────────────────────────────────────────── */
+    .rules-box {
+      background: #1e2a14;
+      border: 1px solid #3a5a20;
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 48px;
+    }
+    .rules-box h2 { font-size: 1rem; color: var(--accent); margin-bottom: 12px; }
+    .rules-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .rule-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.82rem;
+      padding: 6px 0;
+    }
+    .rule-item .dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+
+    /* ── Step sections ───────────────────────────────────────────────── */
+    .step-group {
+      margin-bottom: 56px;
+    }
+    .step-group-title {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--muted);
+      margin-bottom: 20px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .step {
+      margin-bottom: 40px;
+      scroll-margin-top: 24px;
+    }
+
+    .step-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+    .step-number {
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.85rem;
+      border-radius: 50%;
+      width: 34px; height: 34px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .step-number.gold  { background: var(--gold); color: #1a1500; }
+    .step-number.blue  { background: #3a6a9a; }
+    .step-number.red   { background: var(--red); }
+    .step-number.purple{ background: #7a3a9a; }
+
+    .step-title {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: #fff;
+    }
+    .step-subtitle {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .step-body {
+      padding-left: 48px;
+    }
+
+    .step-desc {
+      font-size: 0.88rem;
+      color: var(--text);
+      margin-bottom: 16px;
+      line-height: 1.7;
+    }
+
+    /* ── Screenshot ──────────────────────────────────────────────────── */
+    .screenshot-wrap {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-bottom: 14px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    }
+    .screenshot-bar {
+      background: var(--card);
+      padding: 6px 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border-bottom: 1px solid var(--border);
+    }
+    .screenshot-bar .dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+    }
+    .screenshot-bar .dot.r { background: #ff5f57; }
+    .screenshot-bar .dot.y { background: #febc2e; }
+    .screenshot-bar .dot.g { background: #28c840; }
+    .screenshot-bar .label {
+      margin-left: 6px;
+      font-size: 0.72rem;
+      color: var(--muted);
+      font-family: monospace;
+    }
+    .screenshot-wrap img {
+      width: 100%;
+      display: block;
+    }
+
+    /* ── Callout annotations on screenshots ──────────────────────────── */
+    .screenshot-annot {
+      position: relative;
+      display: inline-block;
+      width: 100%;
+    }
+    .annot {
+      position: absolute;
+      font-size: 0.7rem;
+      font-weight: 700;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 4px;
+      padding: 2px 7px;
+      pointer-events: none;
+      white-space: nowrap;
+      z-index: 10;
+    }
+    .annot::after {
+      content: '';
+      position: absolute;
+      border: 4px solid transparent;
+    }
+    .annot.arrow-right::after {
+      left: -8px; top: 50%; transform: translateY(-50%);
+      border-right-color: var(--accent);
+    }
+    .annot.arrow-left::after {
+      right: -8px; top: 50%; transform: translateY(-50%);
+      border-left-color: var(--accent);
+    }
+    .annot.arrow-down::after {
+      top: -8px; left: 50%; transform: translateX(-50%);
+      border-bottom-color: var(--accent);
+    }
+    .annot.gold-bg { background: var(--gold); color: #1a1500; }
+    .annot.gold-bg::after { border-right-color: var(--gold); border-bottom-color: var(--gold); }
+    .annot.red-bg  { background: var(--red); }
+    .annot.red-bg::after { border-right-color: var(--red); border-bottom-color: var(--red); }
+
+    /* ── Tip / warning callout ───────────────────────────────────────── */
+    .tip, .warning, .info-box {
+      border-radius: var(--radius);
+      padding: 12px 16px;
+      font-size: 0.82rem;
+      margin-bottom: 14px;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+    .tip     { background: #162316; border-left: 3px solid var(--accent); }
+    .warning { background: #231a10; border-left: 3px solid var(--gold); }
+    .info-box{ background: #12202e; border-left: 3px solid #3a6a9a; }
+    .tip-icon { font-size: 1.1rem; }
+
+    /* ── Action list (what to click) ─────────────────────────────────── */
+    .action-list {
+      list-style: none;
+      margin-bottom: 16px;
+    }
+    .action-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 7px 0;
+      font-size: 0.85rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .action-list li:last-child { border-bottom: none; }
+    .action-list li .num {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      width: 20px; height: 20px;
+      font-size: 0.65rem;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .btn-ref {
+      display: inline-block;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1px 7px;
+      font-size: 0.75rem;
+      color: #ccc;
+      font-family: monospace;
+    }
+    .btn-ref.green  { background: #1e3a10; border-color: var(--accent); color: var(--accent); }
+    .btn-ref.gold   { background: #2a2200; border-color: var(--gold);   color: var(--gold); }
+    .btn-ref.red    { background: #2a0e0e; border-color: var(--red);    color: #e87070; }
+
+    /* ── Keyboard shortcut ───────────────────────────────────────────── */
+    kbd {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1px 6px;
+      font-size: 0.75rem;
+      font-family: monospace;
+    }
+
+    /* ── Section divider ─────────────────────────────────────────────── */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 48px 0;
+    }
+
+    /* ── Two-col layout for side-by-side ────────────────────────────── */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    /* ── Footer ──────────────────────────────────────────────────────── */
+    footer {
+      margin-top: 64px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      font-size: 0.75rem;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    a { color: var(--accent); }
+  </style>
+</head>
+<body>
+
+<div class="page-wrap">
+
+  <!-- ── TABLE OF CONTENTS ────────────────────────────────────────────── -->
+  <nav class="toc">
+    <div class="toc-title">📖 User Guide</div>
+    <a href="index.html" class="back-link">← Open App</a>
+
+    <div class="toc-section-label">Getting Started</div>
+    <a href="#overview"><span class="step-num">★</span> Overview</a>
+    <a href="#antichess-rules"><span class="step-num">♟</span> Anti-Chess Rules</a>
+
+    <div class="toc-section-label">Creating a Puzzle</div>
+    <a href="#step1"><span class="step-num">1</span> New Puzzle</a>
+    <a href="#step2"><span class="step-num">2</span> Clear / Reset Board</a>
+    <a href="#step3"><span class="step-num">3</span> Place Pieces</a>
+    <a href="#step4"><span class="step-num">4</span> Set Turn &amp; Details</a>
+    <a href="#step5"><span class="step-num">5</span> Start Recording</a>
+    <a href="#step6"><span class="step-num">6</span> Play the Solution</a>
+    <a href="#step7"><span class="step-num">7</span> Stop &amp; Save</a>
+
+    <div class="toc-section-label">Viewing &amp; Managing</div>
+    <a href="#step8"><span class="step-num">8</span> Load &amp; Navigate</a>
+    <a href="#step9"><span class="step-num">9</span> Export / Import</a>
+    <a href="#tips"><span class="step-num">✓</span> Tips &amp; Shortcuts</a>
+  </nav>
+
+  <!-- ── MAIN CONTENT ─────────────────────────────────────────────────── -->
+  <main class="content">
+
+    <!-- Hero -->
+    <div class="hero" id="overview">
+      <h1>♟ Anti-Chess <span>Puzzle Creator</span></h1>
+      <p>A browser-based tool to design, record, and review Anti-Chess puzzles — all stored locally in your browser with no server required.</p>
+      <div class="hero-meta">
+        <div class="badge">🧩 Puzzle Creator</div>
+        <div class="badge">📋 Solution Recorder</div>
+        <div class="badge">💾 JSON / PGN Export</div>
+        <div class="badge">🎯 Anti-Chess Rules Enforced</div>
+      </div>
+    </div>
+
+    <!-- Quick Reference -->
+    <div class="quick-ref">
+      <h2>⚡ Quick Reference — Three Modes</h2>
+      <div class="qr-grid">
+        <div class="qr-item">
+          <span class="icon">⚙️</span>
+          <div>
+            <strong>Setup Mode</strong>
+            <span>Place / remove pieces freely. Choose whose turn it is.</span>
+          </div>
+        </div>
+        <div class="qr-item">
+          <span class="icon">⏺️</span>
+          <div>
+            <strong>Record Mode</strong>
+            <span>Anti-chess rules enforced. Every move is captured as the solution.</span>
+          </div>
+        </div>
+        <div class="qr-item">
+          <span class="icon">▶️</span>
+          <div>
+            <strong>View Mode</strong>
+            <span>Step through a saved puzzle's solution move-by-move.</span>
+          </div>
+        </div>
+        <div class="qr-item">
+          <span class="icon">💾</span>
+          <div>
+            <strong>Auto-save</strong>
+            <span>Puzzles persist in localStorage between sessions.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Anti-chess rules -->
+    <div class="rules-box" id="antichess-rules">
+      <h2>📜 Anti-Chess Rules (enforced during recording)</h2>
+      <div class="rules-grid">
+        <div class="rule-item"><span class="dot"></span>Captures are <strong>mandatory</strong> — you must capture if any capture is available</div>
+        <div class="rule-item"><span class="dot"></span>When multiple captures exist, <strong>you choose</strong> which to make</div>
+        <div class="rule-item"><span class="dot"></span>The King has <strong>no special status</strong> — it can be captured like any piece</div>
+        <div class="rule-item"><span class="dot"></span><strong>No castling</strong> in Anti-Chess</div>
+        <div class="rule-item"><span class="dot"></span><strong>En passant</strong> is legal</div>
+        <div class="rule-item"><span class="dot"></span>Pawns can promote to <strong>any piece including King</strong></div>
+        <div class="rule-item"><span class="dot"></span><strong>Goal:</strong> lose all your pieces, or have no legal moves</div>
+        <div class="rule-item"><span class="dot"></span>No pieces / no moves remaining = <strong style="color:#629924">WIN</strong></div>
+      </div>
+    </div>
+
+    <hr class="divider" />
+
+    <!-- ════════════════════════════════════════════════════════════════════ -->
+    <!-- PHASE 1: CREATING A PUZZLE -->
+    <!-- ════════════════════════════════════════════════════════════════════ -->
+
+    <div class="step-group">
+      <div class="step-group-title">Phase 1 — Creating a Puzzle</div>
+
+      <!-- STEP 1 -->
+      <div class="step" id="step1">
+        <div class="step-header">
+          <div class="step-number">1</div>
+          <div>
+            <div class="step-title">Start a New Puzzle</div>
+            <div class="step-subtitle">Resets the board to the standard starting position and enters Setup Mode</div>
+          </div>
+        </div>
+        <div class="step-body">
+          <p class="step-desc">
+            When you open the app for the first time, you'll see the chess board in <strong>Setup Mode</strong>
+            (green badge in the top-right). The board starts in the standard chess position.
+            Click <span class="btn-ref green">＋ New Puzzle</span> in the left sidebar to begin.
+          </p>
+          <ul class="action-list">
+            <li><span class="num">1</span>Click <span class="btn-ref green">＋ New Puzzle</span> in the <em>Workflow</em> panel (top of left sidebar)</li>
+            <li><span class="num">2</span>The board resets to the standard starting position</li>
+            <li><span class="num">3</span>The mode badge changes to <strong>⚙ Setup Mode</strong></li>
+          </ul>
+
+          <div class="screenshot-wrap">
+            <div class="screenshot-bar">
+              <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+              <span class="label">Anti-Chess Puzzle Creator — Setup Mode</span>
+            </div>
+            <img src="screenshots/01_initial.png" alt="Initial app state" />
+          </div>
+
+          <div class="tip">
+            <span class="tip-icon">💡</span>
+            <span>Clicking <strong>New Puzzle</strong> clears any unsaved changes. Save your work first if needed.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 2 -->
+      <div class="step" id="step2">
+        <div class="step-header">
+          <div class="step-number">2</div>
+          <div>
+            <div class="step-title">Set Up the Board Position</div>
+            <div class="step-subtitle">Clear the board and place exactly the pieces you want for your puzzle</div>
+          </div>
+        </div>
+        <div class="step-body">
+          <p class="step-desc">
+            You can start from the standard position, or clear the board and build a custom position from scratch.
+            Use the piece palette in the left sidebar to select pieces, then click any square to place them.
+            Right-click a square to erase a piece from it.
+          </p>
+
+          <ul class="action-list">
+            <li><span class="num">1</span>Click <span class="btn-ref red">✕ Clear Board</span> to remove all pieces (for a custom position)</li>
+            <li><span class="num">2</span>— or — <span class="btn-ref">⟳ Reset to Start Position</span> to restore the standard chess setup</li>
+          </ul>
+
+          <div class="two-col">
+            <div class="screenshot-wrap">
+              <div class="screenshot-bar">
+                <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+                <span class="label">After clicking "New Puzzle"</span>
+              </div>
+              <img src="screenshots/02_new_puzzle.png" alt="New puzzle started" />
+            </div>
+            <div class="screenshot-wrap">
+              <div class="screenshot-bar">
+                <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+                <span class="label">After clicking "Clear Board"</span>
+              </div>
+              <img src="screenshots/03_cleared_board.png" alt="Board cleared" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 3 -->
+      <div class="step" id="step3">
+        <div class="step-header">
+          <div class="step-number">3</div>
+          <div>
+            <div class="step-title">Place Pieces Using the Palette</div>
+            <div class="step-subtitle">Select a piece from the sidebar, then click the target square</div>
+          </div>
+        </div>
+        <div class="step-body">
+          <p class="step-desc">
+            The <strong>piece palette</strong> in the left sidebar shows all 6 piece types in both colors.
+            Click a piece to select it (it will highlight with a gold border), then click any board square to place it.
+            To remove a piece, click the <strong>✕ Eraser</strong> or right-click any square.
+          </p>
+
+          <ul class="action-list">
+            <li><span class="num">1</span>Click a piece in the <strong>White Pieces</strong> or <strong>Black Pieces</strong> palette row</li>
+            <li><span class="num">2</span>The selected piece gets a gold highlight border</li>
+            <li><span class="num">3</span>Click any board square to place the piece there</li>
+            <li><span class="num">4</span>Repeat for each piece you want in the puzzle</li>
+            <li><span class="num">5</span>To erase: click <strong>✕ Eraser</strong> then click the square — or right-click any square directly</li>
+          </ul>
+
+          <div class="warning">
+            <span class="tip-icon">⚠️</span>
+            <span>Clicking the same square again with a different piece <strong>replaces</strong> the piece already there. Only one piece per square.</span>
+          </div>
+
+          <div class="screenshot-wrap">
+            <div class="screenshot-bar">
+              <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+              <span class="label">Example: White Queen on d1, White Pawn on e2 · Black King on e8, Black Pawn on d7</span>
+            </div>
+            <img src="screenshots/04_pieces_placed.png" alt="Pieces placed on the board" />
+          </div>
+
+          <div class="tip">
+            <span class="tip-icon">💡</span>
+            <span>Keep Anti-Chess in mind: you <em>don't</em> need both kings. Any combination of pieces is valid for a puzzle. Design positions where forced captures create an interesting sequence.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 4 -->
+      <div class="step" id="step4">
+        <div class="step-header">
+          <div class="step-number gold">4</div>
+          <div>
+            <div class="step-title">Set the Turn &amp; Fill Puzzle Details</div>
+            <div class="step-subtitle">Choose who moves first, and give your puzzle a title and difficulty</div>
+          </div>
+        </div>
+        <div class="step-body">
+          <p class="step-desc">
+            Before recording, set which side moves first using the <strong>Side to move first</strong>
+            toggle beneath the palette. Then fill in the puzzle details in the <strong>right panel</strong>:
+            title, description, and difficulty rating.
+          </p>
+
+          <ul class="action-list">
+            <li><span class="num">1</span>Click <strong>⬜ White</strong> or <strong>⬛ Black</strong> in the <em>Side to move first</em> selector</li>
+            <li><span class="num">2</span>In the right panel, type a <strong>Title</strong> for the puzzle</li>
+            <li><span class="num">3</span>Optionally add a <strong>Description</strong> / hint text</li>
+            <li><span class="num">4</span>Select a <strong>Difficulty</strong> from the dropdown (Beginner → Expert)</li>
+          </ul>
+
+          <div class="screenshot-wrap">
+            <div class="screenshot-bar">
+              <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+              <span class="label">Puzzle details filled in — right panel</span>
+            </div>
+            <img src="screenshots/06_details_filled.png" alt="Puzzle details filled" />
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 5 -->
+      <div class="step" id="step5">
+        <div class="step-header">
+          <div class="step-number">5</div>
+          <div>
+            <div class="step-title">Start Recording the Solution</div>
+            <div class="step-subtitle">Locks the starting position and switches to Record Mode — rules are now enforced</div>
+          </div>
+        </div>
+        <div class="step-body">
+          <p class="step-desc">
+            Click <span class="btn-ref gold">⏺ Start Recording</span> to lock the current board position as the puzzle's start.
+            The app enters <strong>Record Mode</strong> (red badge). From this point, all Anti-Chess rules
+            are enforced — you can only play legal moves, and <strong>captures are mandatory</strong>.
+          </p>
+
+          <ul class="action-list">
+            <li><span class="num">1</span>Click <span class="btn-ref gold">⏺ Start Recording</span> in the <em>Workflow</em> section</li>
+            <li><span class="num">2</span>The badge changes to <strong>⏺ Recording</strong> (red)</li>
+            <li><span class="num">3</span>The FEN of the start position is locked (shown below the board)</li>
+            <li><span class="num">4</span>If any captures are immediately available, a red warning banner appears</li>
+          </ul>
+
+          <div class="screenshot-wrap">
+            <div class="screenshot-bar">
+              <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+              <span class="label">Record Mode active — ⏺ Recording badge shown</span>
+            </div>
+            <img src="screenshots/07_recording_started.png" alt="Recording started" />
+          </div>
+
+          <div class="warning">
+            <span class="tip-icon">⚠️</span>
+            <span>You need at least <strong>2 pieces</strong> on the board before starting to record. The app will show an error toast if the board is too sparse.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 6 -->
+      <div class="step" id="step6">
+        <div class="step-header">
+          <div class="step-number">6</div>
+          <div>
+            <div class="step-title">Play the Solution Moves</div>
+            <div class="step-subtitle">Click a piece to select it, then click the target square — move hints shown</div>
+          </div>
+        </div>
+        <div class="step-body">
+          <p class="step-desc">
+            In Record Mode, click any of <strong>your pieces</strong> to select it. The board will show legal move
+            indicators: <strong>dark dots</strong> on empty squares you can move to, and <strong>red rings</strong>
+            on enemy pieces you can capture. If a capture is available anywhere, you <em>must</em> capture
+            (the red banner reminds you).
+          </p>
+
+          <ul class="action-list">
+            <li><span class="num">1</span>Click a piece of the side whose turn it is — it highlights green</li>
+            <li><span class="num">2</span>Legal move targets appear: <strong>dots</strong> (moves) and <strong>red rings</strong> (captures)</li>
+            <li><span class="num">3</span>Click a target square to make the move</li>
+            <li><span class="num">4</span>The move is logged in the <em>Solution Moves</em> list (left sidebar)</li>
+            <li><span class="num">5</span>Last-move squares highlight in <strong>yellow</strong> (Lichess style)</li>
+            <li><span class="num">6</span>Repeat for each move in the solution — alternating sides automatically</li>
+          </ul>
+
+          <div class="two-col">
+            <div class="screenshot-wrap">
+              <div class="screenshot-bar">
+                <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+                <span class="label">Piece selected — legal moves shown</span>
+              </div>
+              <img src="screenshots/08_piece_selected.png" alt="Piece selected showing legal moves" />
+            </div>
+            <div class="screenshot-wrap">
+              <div class="screenshot-bar">
+                <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+                <span class="label">After first move — yellow last-move highlight</span>
+              </div>
+              <img src="screenshots/09_move_1_played.png" alt="First move played" />
+            </div>
+          </div>
+
+          <div class="two-col">
+            <div class="screenshot-wrap">
+              <div class="screenshot-bar">
+                <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+                <span class="label">Black's turn — select a piece</span>
+              </div>
+              <img src="screenshots/10_black_selects.png" alt="Black selects piece" />
+            </div>
+            <div class="screenshot-wrap">
+              <div class="screenshot-bar">
+                <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+                <span class="label">Solution list growing as moves are recorded</span>
+              </div>
+              <img src="screenshots/13_solution_recorded.png" alt="Solution list with moves" />
+            </div>
+          </div>
+
+          <div class="info-box">
+            <span class="tip-icon">ℹ️</span>
+            <span>
+              <strong>Pawn Promotion:</strong> When a pawn reaches the last rank, a promotion dialog pops up.
+              Click any piece (including King — allowed in Anti-Chess!) to promote.
+              <br><br>
+              <strong>Undo:</strong> Made a wrong move? Click <span class="btn-ref">↩ Undo Last Move</span> to step back.
+            </span>
+          </div>
+
+          <div class="warning">
+            <span class="tip-icon">⚠️</span>
+            <span><strong>Mandatory captures:</strong> If a red warning banner appears at the top of the Solution Moves panel, at least one capture is available and you <em>must</em> capture before making any other move.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 7 -->
+      <div class="step" id="step7">
+        <div class="step-header">
+          <div class="step-number red">7</div>
+          <div>
+            <div class="step-title">Stop Recording &amp; Save the Puzzle</div>
+            <div class="step-subtitle">Finalise the solution and save it to local storage</div>
+          </div>
+        </div>
+        <div class="step-body">
+          <p class="step-desc">
+            When you have recorded all the solution moves, click <span class="btn-ref">⏹ Stop Recording</span>.
+            The app returns to Setup Mode. Review the solution list, then click <span class="btn-ref green">💾 Save Puzzle</span>
+            in the right panel to persist the puzzle.
+          </p>
+
+          <ul class="action-list">
+            <li><span class="num">1</span>Click <span class="btn-ref">⏹ Stop Recording</span> when the solution is complete</li>
+            <li><span class="num">2</span>The mode badge returns to <strong>⚙ Setup Mode</strong></li>
+            <li><span class="num">3</span>Verify the <em>Solution Moves</em> list looks correct</li>
+            <li><span class="num">4</span>Confirm the <strong>Title</strong>, <strong>Description</strong> and <strong>Difficulty</strong> in the right panel</li>
+            <li><span class="num">5</span>Click <span class="btn-ref green">💾 Save Puzzle</span> — a green toast confirms the save</li>
+            <li><span class="num">6</span>The puzzle appears in the <em>Saved Puzzles</em> list below</li>
+          </ul>
+
+          <div class="two-col">
+            <div class="screenshot-wrap">
+              <div class="screenshot-bar">
+                <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+                <span class="label">Recording stopped — back to Setup Mode</span>
+              </div>
+              <img src="screenshots/14_recording_stopped.png" alt="Recording stopped" />
+            </div>
+            <div class="screenshot-wrap">
+              <div class="screenshot-bar">
+                <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+                <span class="label">Puzzle saved — toast notification + list updated</span>
+              </div>
+              <img src="screenshots/15_puzzle_saved.png" alt="Puzzle saved" />
+            </div>
+          </div>
+
+          <div class="tip">
+            <span class="tip-icon">💡</span>
+            <span>Puzzles are saved to <strong>localStorage</strong> in your browser — they persist across page refreshes. For long-term storage, use <span class="btn-ref">📤 Export All (JSON)</span> to download a backup file.</span>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /.step-group Phase 1 -->
+
+    <hr class="divider" />
+
+    <!-- ════════════════════════════════════════════════════════════════════ -->
+    <!-- PHASE 2: VIEWING & MANAGING -->
+    <!-- ════════════════════════════════════════════════════════════════════ -->
+
+    <div class="step-group">
+      <div class="step-group-title">Phase 2 — Viewing &amp; Managing Puzzles</div>
+
+      <!-- STEP 8 -->
+      <div class="step" id="step8">
+        <div class="step-header">
+          <div class="step-number blue">8</div>
+          <div>
+            <div class="step-title">Load a Puzzle &amp; Navigate the Solution</div>
+            <div class="step-subtitle">Click a puzzle in the list to enter View Mode, then step through moves</div>
+          </div>
+        </div>
+        <div class="step-body">
+          <p class="step-desc">
+            Click any puzzle in the <em>Saved Puzzles</em> list (right panel) to load it into <strong>View Mode</strong>.
+            The board resets to the puzzle's start position. Use the navigation buttons in the left sidebar
+            to step through the solution forward and backward.
+          </p>
+
+          <ul class="action-list">
+            <li><span class="num">1</span>Click a puzzle name in the <em>Saved Puzzles</em> list (right panel)</li>
+            <li><span class="num">2</span>The board loads the puzzle's start position</li>
+            <li><span class="num">3</span>The mode badge changes to <strong>▶ View Mode</strong></li>
+            <li><span class="num">4</span>The <em>Navigate Solution</em> panel appears in the left sidebar</li>
+            <li><span class="num">5</span>Click <kbd>▶</kbd> to advance one move, <kbd>◀</kbd> to go back</li>
+            <li><span class="num">6</span>Click <kbd>⏮</kbd> to jump to start, <kbd>⏭</kbd> to jump to end</li>
+            <li><span class="num">7</span>Click a move in the <em>Solution Moves</em> list to jump directly to that position</li>
+          </ul>
+
+          <div class="two-col">
+            <div class="screenshot-wrap">
+              <div class="screenshot-bar">
+                <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+                <span class="label">Puzzle loaded — View Mode, start position</span>
+              </div>
+              <img src="screenshots/16_puzzle_loaded.png" alt="Puzzle loaded in view mode" />
+            </div>
+            <div class="screenshot-wrap">
+              <div class="screenshot-bar">
+                <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+                <span class="label">After clicking ▶ — move 1 shown with yellow highlight</span>
+              </div>
+              <img src="screenshots/17_step_navigate.png" alt="Navigate step 1" />
+            </div>
+          </div>
+
+          <div class="two-col">
+            <div class="screenshot-wrap">
+              <div class="screenshot-bar">
+                <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+                <span class="label">Move 2 highlighted in solution list</span>
+              </div>
+              <img src="screenshots/18_step_2.png" alt="Step 2 in solution" />
+            </div>
+            <div class="screenshot-wrap">
+              <div class="screenshot-bar">
+                <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+                <span class="label">After ⏮ — back to puzzle start position</span>
+              </div>
+              <img src="screenshots/19_back_to_start.png" alt="Back to start" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 9 -->
+      <div class="step" id="step9">
+        <div class="step-header">
+          <div class="step-number purple">9</div>
+          <div>
+            <div class="step-title">Export &amp; Import Puzzles</div>
+            <div class="step-subtitle">Back up your puzzles as JSON, or export a single puzzle as PGN</div>
+          </div>
+        </div>
+        <div class="step-body">
+          <p class="step-desc">
+            The <em>Import / Export</em> section of the right panel lets you save puzzles to files
+            and load them back. JSON is used for full collections; PGN is the chess standard format
+            compatible with tools like Lichess.
+          </p>
+
+          <ul class="action-list">
+            <li><span class="num">1</span><span class="btn-ref">📤 Export All (JSON)</span> — downloads all saved puzzles as <code>antichess_puzzles.json</code></li>
+            <li><span class="num">2</span><span class="btn-ref">📂 Load Puzzles (JSON)</span> — opens a file picker to import a previously exported JSON file</li>
+            <li><span class="num">3</span><span class="btn-ref">📄 Export Current (PGN)</span> — exports the <em>currently active</em> puzzle in standard PGN format with <code>[Variant "Antichess"]</code> header</li>
+            <li><span class="num">4</span><span class="btn-ref red">🗑 Delete Puzzle</span> — permanently removes the active puzzle after confirmation</li>
+          </ul>
+
+          <div class="info-box">
+            <span class="tip-icon">ℹ️</span>
+            <span>
+              The exported JSON is a plain array of puzzle objects. Each puzzle contains:
+              <code>id</code>, <code>title</code>, <code>description</code>, <code>difficulty</code>,
+              <code>startFEN</code>, and <code>solution</code> (an array of <code>{ uci, san, fenAfter }</code> objects).
+            </span>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /.step-group Phase 2 -->
+
+    <hr class="divider" />
+
+    <!-- Tips -->
+    <div class="step" id="tips">
+      <div class="step-header">
+        <div class="step-number" style="background:#555">✓</div>
+        <div>
+          <div class="step-title">Tips &amp; Best Practices</div>
+        </div>
+      </div>
+      <div class="step-body">
+        <div class="qr-grid" style="margin-bottom:16px">
+          <div class="qr-item">
+            <span class="icon">🎯</span>
+            <div>
+              <strong>Good puzzle design</strong>
+              <span>Create positions where only one sequence of captures leads to losing all pieces quickly.</span>
+            </div>
+          </div>
+          <div class="qr-item">
+            <span class="icon">↩</span>
+            <div>
+              <strong>Use Undo freely</strong>
+              <span>During recording, Undo removes the last move from the solution list. Experiment without fear.</span>
+            </div>
+          </div>
+          <div class="qr-item">
+            <span class="icon">💾</span>
+            <div>
+              <strong>Export regularly</strong>
+              <span>localStorage can be cleared by the browser. Export JSON backups regularly.</span>
+            </div>
+          </div>
+          <div class="qr-item">
+            <span class="icon">📋</span>
+            <div>
+              <strong>FEN box</strong>
+              <span>The FEN below the board always shows the current position. Copy it for external tools.</span>
+            </div>
+          </div>
+          <div class="qr-item">
+            <span class="icon">🖱️</span>
+            <div>
+              <strong>Right-click to erase</strong>
+              <span>In Setup Mode, right-clicking any square instantly removes the piece on it.</span>
+            </div>
+          </div>
+          <div class="qr-item">
+            <span class="icon">⚙️</span>
+            <div>
+              <strong>Edit saved puzzles</strong>
+              <span>Load a puzzle, switch back to Setup, re-record, and save — the existing entry updates.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      Anti-Chess Puzzle Creator · Pieces: CBurnett set (Colin M.L. Burnett, GPLv2+) via lichess-org/lila ·
+      <a href="index.html">← Open the App</a>
+    </footer>
+
+  </main>
+</div>
+
+<script>
+  // Highlight active TOC link on scroll
+  const steps = document.querySelectorAll('.step, .hero, .rules-box');
+  const links  = document.querySelectorAll('.toc a[href^="#"]');
+  const obs    = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        const link = document.querySelector(`.toc a[href="#${e.target.id}"]`);
+        if (link) link.classList.add('active');
+      }
+    });
+  }, { threshold: 0.3 });
+  steps.forEach(s => { if (s.id) obs.observe(s); });
+</script>
+
+</body>
+</html>

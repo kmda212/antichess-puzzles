@@ -1,0 +1,573 @@
+/* ── Reset & Base ─────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  /* ── UI chrome (Lichess dark sidebar palette) ── */
+  --bg:        #161512;
+  --panel:     #1c1a17;
+  --card:      #272522;
+  --accent:    #629924;   /* lichess green */
+  --accent2:   #c0a000;   /* lichess gold  */
+  --text:      #bababa;
+  --muted:     #776e65;
+  --border:    #3d3a35;
+  --radius:    6px;
+  --shadow:    0 4px 20px rgba(0,0,0,0.6);
+
+  /* ── Board (Lichess "Brown" theme exact values) ── */
+  --light-sq:       #f0d9b5;
+  --dark-sq:        #b58863;
+  --sq-selected:    rgba(20,  85,  30, 0.5);   /* green */
+  --sq-lastmove:    rgba(246, 235, 114, 0.6);   /* yellow */
+  --sq-dot:         rgba(20,  85,   0, 0.35);   /* dark dot for legal moves */
+  --sq-capture-rim: rgba(204,  0,   0, 0.55);   /* red ring for capture hints */
+  --sq-check:       rgba(220,  0,   0, 0.65);
+  --sq-coord-light: #b58863;
+  --sq-coord-dark:  #f0d9b5;
+}
+
+body {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Header ──────────────────────────────────────────────────────── */
+header {
+  background: var(--panel);
+  border-bottom: 2px solid #3d3a35;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: var(--shadow);
+}
+header h1 {
+  font-size: 1.4rem;
+  color: var(--accent);
+  letter-spacing: 1px;
+}
+header .subtitle {
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-top: 2px;
+}
+header .spacer { flex: 1; }
+
+/* ── Layout ──────────────────────────────────────────────────────── */
+.layout {
+  display: flex;
+  flex: 1;
+  gap: 0;
+  overflow: hidden;
+}
+
+/* ── Left Sidebar ────────────────────────────────────────────────── */
+.sidebar {
+  width: 260px;
+  background: var(--panel);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.sidebar-section {
+  padding: 16px;
+  border-bottom: 1px solid var(--border);
+}
+.sidebar-section h3 {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+/* ── Buttons ─────────────────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: var(--radius);
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: opacity 0.15s, transform 0.1s;
+  width: 100%;
+  margin-bottom: 6px;
+}
+.btn:hover  { opacity: 0.85; transform: translateY(-1px); }
+.btn:active { transform: translateY(0); }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+.btn-primary   { background: var(--accent);  color: #fff; }
+.btn-secondary { background: var(--card);    color: var(--text); border: 1px solid var(--border); }
+.btn-warning   { background: var(--accent2); color: #1a1a2e; }
+.btn-danger    { background: #c0392b; color: #fff; }
+.btn-sm        { padding: 5px 10px; font-size: 0.78rem; width: auto; margin-bottom: 0; }
+
+/* ── Mode indicator ──────────────────────────────────────────────── */
+.mode-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
+}
+.mode-setup   { background: #2a5c2a; color: #8ef08e; }
+.mode-record  { background: #5c2a2a; color: #f08e8e; border: 1px solid var(--accent); }
+.mode-view    { background: #2a3a5c; color: #8eaaf0; }
+
+/* ── Piece palette (setup mode) ──────────────────────────────────── */
+.piece-palette {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 4px;
+  margin-bottom: 8px;
+}
+.palette-piece {
+  width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+  border-radius: 6px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border-color 0.15s, background 0.15s;
+  background: var(--card);
+  user-select: none;
+}
+.palette-piece:hover         { border-color: var(--muted); }
+.palette-piece.selected      { border-color: var(--accent2); background: rgba(245,166,35,0.2); }
+.palette-piece.eraser        { font-size: 16px; color: var(--muted); }
+
+.palette-label {
+  font-size: 0.7rem;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+
+/* ── Turn selector ───────────────────────────────────────────────── */
+.turn-selector {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+.turn-btn {
+  flex: 1;
+  padding: 6px;
+  border-radius: var(--radius);
+  border: 2px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  cursor: pointer;
+  font-size: 0.8rem;
+  text-align: center;
+  transition: all 0.15s;
+}
+.turn-btn.active { border-color: var(--accent2); background: rgba(245,166,35,0.2); }
+
+/* ── Solution list ───────────────────────────────────────────────── */
+.solution-list {
+  list-style: none;
+  max-height: 280px;
+  overflow-y: auto;
+}
+.solution-list li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 6px;
+  border-radius: 4px;
+  font-size: 0.82rem;
+  font-family: 'Courier New', monospace;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+.solution-list li:hover        { background: var(--card); }
+.solution-list li.active       { background: var(--card); border-left: 3px solid var(--accent2); }
+.solution-list li .move-num    { color: var(--muted); font-size: 0.72rem; min-width: 22px; }
+.solution-list li .move-san    { flex: 1; }
+.solution-list li .move-side   { font-size: 10px; }
+
+/* ── Center: Board area ───────────────────────────────────────────── */
+.board-area {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  overflow: hidden;
+}
+
+.board-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+.board-row-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+.board-container {
+  position: relative;
+  user-select: none;
+}
+
+.rank-label, .file-label {
+  font-size: 0.7rem;
+  color: var(--muted);
+  text-align: center;
+  width: 18px;
+}
+.file-labels {
+  display: none;   /* coords are now inside squares */
+}
+.file-label { width: 75px; }
+
+/* ── Chess Board ─────────────────────────────────────────────────── */
+#board {
+  display: grid;
+  grid-template-columns: repeat(8, 75px);
+  grid-template-rows:    repeat(8, 75px);
+  box-shadow: 3px 3px 10px rgba(0,0,0,0.7);
+  position: relative;
+}
+
+.sq {
+  width: 75px; height: 75px;
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+  cursor: pointer;
+}
+.sq.light { background: var(--light-sq); }
+.sq.dark  { background: var(--dark-sq); }
+
+/* Coordinate labels Lichess-style (inside corners) */
+.sq .coord {
+  position: absolute;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  pointer-events: none;
+  z-index: 2;
+}
+.sq.light .coord { color: var(--sq-coord-light); }
+.sq.dark  .coord { color: var(--sq-coord-dark); }
+.sq .coord.file  { bottom: 2px; right: 3px; }
+.sq .coord.rank  { top: 2px;   left: 3px; }
+
+/* ── Highlight overlays ──────────────────────────────────────────── */
+.sq::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+.sq.sq-selected::after { background: var(--sq-selected); }
+.sq.sq-lastmove::after { background: var(--sq-lastmove); }
+.sq.sq-check::after    { background: var(--sq-check); }
+
+/* Legal move dot (empty squares) */
+.sq.sq-dot::after {
+  background: radial-gradient(circle, var(--sq-dot) 24%, transparent 27%);
+}
+
+/* Capture ring (occupied squares) */
+.sq.sq-capture::after {
+  background: radial-gradient(
+    circle,
+    transparent 60%,
+    var(--sq-capture-rim) 63%,
+    var(--sq-capture-rim) 78%,
+    transparent 81%
+  );
+}
+
+/* Mandatory capture warning — Lichess red border */
+.sq.must-capture { box-shadow: inset 0 0 0 3px rgba(220,0,0,0.75); }
+
+/* ── Piece image ─────────────────────────────────────────────────── */
+.piece-img {
+  width:  68px;
+  height: 68px;
+  position: relative;
+  z-index: 4;
+  pointer-events: none;
+  /* no drop-shadow — Lichess pieces have their own built-in stroke */
+}
+
+/* ── Right Panel ─────────────────────────────────────────────────── */
+.right-panel {
+  width: 280px;
+  background: var(--panel);
+  border-left: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+.right-section {
+  padding: 16px;
+  border-bottom: 1px solid var(--border);
+}
+.right-section h3 {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+/* ── Status bar ──────────────────────────────────────────────────── */
+.status-bar {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 8px 12px;
+  font-size: 0.82rem;
+  margin-bottom: 10px;
+  border-left: 3px solid var(--accent);
+  min-height: 36px;
+}
+.status-bar.info   { border-color: #629924; }
+.status-bar.warn   { border-color: #c0a000; }
+.status-bar.error  { border-color: #c0392b; }
+.status-bar.ok     { border-color: #629924; }
+
+/* ── Puzzle meta form ────────────────────────────────────────────── */
+.meta-form label {
+  font-size: 0.75rem;
+  color: var(--muted);
+  display: block;
+  margin-bottom: 3px;
+  margin-top: 8px;
+}
+.meta-form input, .meta-form select, .meta-form textarea {
+  width: 100%;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 6px 10px;
+  color: var(--text);
+  font-size: 0.83rem;
+  resize: vertical;
+}
+.meta-form input:focus, .meta-form select:focus, .meta-form textarea:focus {
+  outline: none;
+  border-color: var(--accent2);
+}
+
+/* ── Puzzle list ─────────────────────────────────────────────────── */
+.puzzle-list {
+  list-style: none;
+  max-height: 320px;
+  overflow-y: auto;
+}
+.puzzle-list li {
+  padding: 8px 10px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  border: 1px solid transparent;
+  margin-bottom: 4px;
+  transition: all 0.1s;
+}
+.puzzle-list li:hover  { background: var(--card); border-color: var(--border); }
+.puzzle-list li.active { background: var(--card); border-color: var(--accent2); }
+.puzzle-list li .p-title { font-size: 0.85rem; font-weight: 600; }
+.puzzle-list li .p-meta  { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
+
+/* ── FEN display ─────────────────────────────────────────────────── */
+.fen-box {
+  font-family: 'Courier New', monospace;
+  font-size: 0.72rem;
+  color: var(--muted);
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 6px 8px;
+  word-break: break-all;
+  margin-top: 4px;
+}
+
+/* ── Promo modal ─────────────────────────────────────────────────── */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+}
+.modal-overlay.visible { display: flex; }
+
+.modal {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: var(--shadow);
+  max-width: 420px;
+  width: 90%;
+}
+.modal h2 { margin-bottom: 14px; font-size: 1.1rem; }
+.promo-choices {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+.promo-choice {
+  font-size: 48px;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 8px;
+  border: 2px solid var(--border);
+  background: var(--card);
+  transition: all 0.15s;
+}
+.promo-choice:hover { border-color: var(--accent2); transform: scale(1.1); }
+
+/* ── Toast ───────────────────────────────────────────────────────── */
+.toast-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.toast {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 16px;
+  font-size: 0.85rem;
+  box-shadow: var(--shadow);
+  animation: slideIn 0.2s ease;
+  max-width: 300px;
+}
+.toast.success { border-color: #2ecc71; }
+.toast.error   { border-color: var(--accent); }
+.toast.info    { border-color: #5599ff; }
+
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to   { transform: translateX(0);    opacity: 1; }
+}
+
+/* ── Scrollbar ───────────────────────────────────────────────────── */
+::-webkit-scrollbar       { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* ── Responsive ──────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .layout { flex-direction: column; }
+  .sidebar, .right-panel { width: 100%; }
+  .sidebar { border-right: none; border-bottom: 1px solid var(--border); }
+}
+
+/* ── Capture warning banner ──────────────────────────────────────── */
+.capture-warning {
+  background: rgba(233,69,96,0.15);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 6px 10px;
+  font-size: 0.78rem;
+  color: #f08e8e;
+  margin-bottom: 8px;
+  display: none;
+}
+.capture-warning.visible { display: block; }
+
+/* ── Navigation buttons in view mode ────────────────────────────── */
+.nav-btns {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+}
+.nav-btns .btn { flex: 1; margin-bottom: 0; }
+
+/* ── Branch selector ─────────────────────────────────────────────── */
+.branch-selector {
+  background: rgba(192,160,0,0.08);
+  border: 1px solid var(--accent2);
+  border-radius: var(--radius);
+  padding: 8px;
+  margin-bottom: 8px;
+}
+.branch-label {
+  font-size: 0.68rem;
+  color: var(--accent2);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+.branch-options { display: flex; flex-direction: column; gap: 4px; }
+.branch-option {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 5px 10px;
+  font-size: 0.83rem;
+  font-family: 'Courier New', monospace;
+  cursor: pointer;
+  color: var(--text);
+  text-align: left;
+  transition: border-color 0.1s, background 0.1s;
+  width: 100%;
+}
+.branch-option:hover { border-color: var(--accent); background: rgba(98,153,36,0.12); }
+
+/* ── Solution list extras ────────────────────────────────────────── */
+.sol-anymove { color: var(--accent2); font-style: italic; }
+.sol-badge {
+  font-size: 0.65rem;
+  background: var(--accent2);
+  color: #1a1a2e;
+  border-radius: 3px;
+  padding: 1px 5px;
+  margin-left: 4px;
+  font-family: sans-serif;
+  font-style: normal;
+  font-weight: 700;
+}
+.solution-list li.clickable { cursor: pointer; }
+.solution-list li.clickable:hover { background: var(--card); }
+
+/* ── Active-toggle button state (Any Move Step when armed) ───────── */
+.btn.active-toggle {
+  background: rgba(192,160,0,0.25);
+  border: 1px solid var(--accent2);
+  color: var(--accent2);
+}
+
+/* ── Board shake on wrong move (solver) ──────────────────────────── */
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  20%     { transform: translateX(-6px); }
+  40%     { transform: translateX(6px); }
+  60%     { transform: translateX(-4px); }
+  80%     { transform: translateX(4px); }
+}
+.board-shake { animation: shake 0.4s ease; }
+
+/* ── Hint flash (solver) ─────────────────────────────────────────── */
+@keyframes hintPulse {
+  0%,100% { box-shadow: none; }
+  50%     { box-shadow: inset 0 0 0 4px #c0a000; }
+}
+.hint-flash { animation: hintPulse 0.5s ease 2; }
