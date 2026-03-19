@@ -1,0 +1,111 @@
+{
+  "id": "puzzle_1773910686847",
+  "title": "Untitled Puzzle",
+  "description": "",
+  "difficulty": "medium",
+  "startFEN": "R7/8/4p3/8/6p1/P2P4/4PPP1/4KBN1 w - - 0 21",
+  "solution": [
+    {
+      "uci": "g2g3",
+      "san": "g3",
+      "fenAfter": "R7/8/4p3/8/6p1/P2P2P1/4PP2/4KBN1 b - - 0 21"
+    },
+    {
+      "uci": "e6e5",
+      "san": "e5",
+      "fenAfter": "R7/8/8/4p3/6p1/P2P2P1/4PP2/4KBN1 w - - 0 22"
+    },
+    {
+      "uci": "d3d4",
+      "san": "d4",
+      "fenAfter": "R7/8/8/4p3/3P2p1/P5P1/4PP2/4KBN1 b - - 0 22"
+    },
+    {
+      "uci": "e5d4",
+      "san": "exd4",
+      "fenAfter": "R7/8/8/8/3p2p1/P5P1/4PP2/4KBN1 w - - 0 23"
+    },
+    {
+      "uci": "e2e3",
+      "san": "e3",
+      "fenAfter": "R7/8/8/8/3p2p1/P3P1P1/5P2/4KBN1 b - - 0 23"
+    },
+    {
+      "uci": "d4e3",
+      "san": "dxe3",
+      "fenAfter": "R7/8/8/8/6p1/P3p1P1/5P2/4KBN1 w - - 0 24"
+    },
+    {
+      "uci": "f2e3",
+      "san": "fxe3",
+      "fenAfter": "R7/8/8/8/6p1/P3P1P1/8/4KBN1 b - - 0 24"
+    }
+  ],
+  "solutionTree": {
+    "anyMove": false,
+    "options": [
+      {
+        "uci": "g2g3",
+        "san": "g3",
+        "next": {
+          "anyMove": false,
+          "options": [
+            {
+              "uci": "e6e5",
+              "san": "e5",
+              "next": {
+                "anyMove": false,
+                "options": [
+                  {
+                    "uci": "d3d4",
+                    "san": "d4",
+                    "next": {
+                      "anyMove": false,
+                      "options": [
+                        {
+                          "uci": "e5d4",
+                          "san": "exd4",
+                          "next": {
+                            "anyMove": false,
+                            "options": [
+                              {
+                                "uci": "e2e3",
+                                "san": "e3",
+                                "next": {
+                                  "anyMove": false,
+                                  "options": [
+                                    {
+                                      "uci": "d4e3",
+                                      "san": "dxe3",
+                                      "next": {
+                                        "anyMove": false,
+                                        "options": [
+                                          {
+                                            "uci": "f2e3",
+                                            "san": "fxe3",
+                                            "next": {
+                                              "anyMove": false,
+                                              "options": []
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

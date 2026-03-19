@@ -35,6 +35,7 @@
       <button id="btnUndoMove"    class="btn btn-secondary" disabled>↩ Undo Last Move</button>
       <button id="btnMarkAnyMove" class="btn btn-secondary" disabled title="Mark the next move you play as 'any move accepted' — the solver will accept any legal move at this step">⚡ Any Move Step</button>
       <button id="btnStopRecord"  class="btn btn-secondary" disabled>⏹ Stop Recording</button>
+      <button id="btnReturnToGame" class="btn btn-secondary" style="display:none">↩ Return to Game</button>
     </div>
 
     <!-- Setup tools -->
@@ -123,6 +124,24 @@
         <div id="fenBox" class="fen-box"></div>
       </div>
 
+      <!-- Game scrubber (shown when PGN is loaded) -->
+      <div id="gameScrubber" style="display:none;width:600px;margin-top:10px">
+        <div class="scr-header">
+          <span id="scrubGameInfo">Game 1/1</span>
+          <span id="scrubMoveCounter" class="scr-counter">Move 0 / 0</span>
+        </div>
+        <div class="scr-controls">
+          <button id="scrubPrevGame" class="btn btn-sm btn-secondary" title="Previous game">⏮ Game</button>
+          <button id="scrubFirst"    class="btn btn-sm btn-secondary">⏮</button>
+          <button id="scrubPrev"     class="btn btn-sm btn-secondary">◀</button>
+          <button id="scrubNext"     class="btn btn-sm btn-warning">▶</button>
+          <button id="scrubLast"     class="btn btn-sm btn-secondary">⏭</button>
+          <button id="scrubNextGame" class="btn btn-sm btn-secondary" title="Next game">Game ⏭</button>
+          <button id="btnStartPuzzleHere" class="btn btn-warning" style="margin-left:auto">✂ Start Puzzle from Here</button>
+        </div>
+        <div id="scrubMoveBar" class="scr-move-bar"></div>
+      </div>
+
     </div>
   </main>
 
@@ -150,6 +169,18 @@
         <button id="btnSavePuzzle"   class="btn btn-primary">💾 Save Puzzle</button>
         <button id="btnDeletePuzzle" class="btn btn-danger">🗑 Delete Puzzle</button>
       </div>
+    </div>
+
+    <!-- PGN Game Import -->
+    <div class="right-section">
+      <h3>📋 Import Games (PGN)</h3>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <button id="btnLoadPGNFiles"  class="btn btn-secondary">📂 Select Files</button>
+        <button id="btnLoadPGNFolder" class="btn btn-secondary">📁 Select Folder</button>
+      </div>
+      <input type="file" id="pgnFileInput"   accept=".pgn" multiple style="display:none">
+      <input type="file" id="pgnFolderInput" webkitdirectory style="display:none">
+      <div id="pgnGameList" class="pgn-game-list" style="display:none"></div>
     </div>
 
     <!-- File operations -->
@@ -201,6 +232,7 @@
 
 <!-- ── Scripts ──────────────────────────────────────────────────────────── -->
 <script src="js/antichess.js"></script>
+<script src="js/pgn.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>

@@ -174,6 +174,7 @@ function renderBoard() {
 
 // ── Square click ──────────────────────────────────────────────────────────
 function onSquareClick(sqIdx) {
+  if (typeof PGN !== 'undefined' && PGN.scrubbing) return; // read-only while browsing game
   if (App.mode === 'SETUP')  { handleSetupClick(sqIdx); return; }
   if (App.mode === 'RECORD') { handleRecordClick(sqIdx); return; }
   // VIEW: no direct board interaction
@@ -1004,6 +1005,7 @@ function init() {
   setTurn(AC.WHITE);
   renderPuzzleList();
   setStatus('Welcome! Click "New Puzzle" to begin, or load a saved puzzle.', 'info');
+  if (typeof initPGN === 'function') initPGN();
 }
 
 document.addEventListener('DOMContentLoaded', init);
