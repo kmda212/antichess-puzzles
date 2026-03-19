@@ -600,7 +600,8 @@ function actionNewPuzzle() {
     solution: [],
     solutionTree: rootNode,
   };
-  App.gameState          = AC.parseFEN(AC.START_FEN);
+  App.gameState          = AC.parseFEN('8/8/8/8/8/8/8/8 w - - 0 1');
+  App.gameState.board    = Array(64).fill(AC.EMPTY);  // always start clean
   App.gameState.history  = [];
   App.setupTurn          = AC.WHITE;
   App.lastMove           = null;
@@ -961,7 +962,8 @@ function init() {
   initDOM();
   loadPuzzlesFromStorage();
 
-  App.gameState = AC.parseFEN(AC.START_FEN);
+  App.gameState = AC.parseFEN('8/8/8/8/8/8/8/8 w - - 0 1');
+  App.gameState.board   = Array(64).fill(AC.EMPTY);
   App.gameState.history = [];
 
   const rootNode = { anyMove: false, options: [] };
