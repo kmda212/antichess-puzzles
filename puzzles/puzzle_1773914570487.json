@@ -1,0 +1,125 @@
+{
+  "id": "puzzle_1773914570487",
+  "title": "Untitled Puzzle",
+  "description": "",
+  "difficulty": "medium",
+  "startFEN": "4k1nr/p5pp/4p3/8/P3P2P/7R/8/b5r1 w - - 0 19",
+  "solution": [
+    {
+      "uci": "h3h1",
+      "san": "Rh1",
+      "fenAfter": "4k1nr/p5pp/4p3/8/P3P2P/8/8/b5rR b - - 1 19"
+    },
+    {
+      "uci": "g1h1",
+      "san": "Rxh1",
+      "fenAfter": "4k1nr/p5pp/4p3/8/P3P2P/8/8/b6r w - - 0 20"
+    },
+    {
+      "uci": "h4h5",
+      "san": "h5",
+      "fenAfter": "4k1nr/p5pp/4p3/7P/P3P3/8/8/b6r b - - 0 20"
+    },
+    {
+      "uci": "h1h5",
+      "san": "Rxh5",
+      "fenAfter": "4k1nr/p5pp/4p3/7r/P3P3/8/8/b7 w - - 0 21"
+    },
+    {
+      "uci": "a4a5",
+      "san": "a5",
+      "fenAfter": "4k1nr/p5pp/4p3/P6r/4P3/8/8/b7 b - - 0 21"
+    },
+    {
+      "uci": "h5a5",
+      "san": "Rxa5",
+      "fenAfter": "4k1nr/p5pp/4p3/r7/4P3/8/8/b7 w - - 0 22"
+    },
+    {
+      "uci": "e4e5",
+      "san": "e5",
+      "fenAfter": "4k1nr/p5pp/4p3/r3P3/8/8/8/b7 b - - 0 22"
+    },
+    {
+      "uci": "a5e5",
+      "san": "Rxe5",
+      "fenAfter": "4k1nr/p5pp/4p3/4r3/8/8/8/b7 w - - 0 23"
+    }
+  ],
+  "solutionTree": {
+    "anyMove": false,
+    "options": [
+      {
+        "uci": "h3h1",
+        "san": "Rh1",
+        "next": {
+          "anyMove": false,
+          "options": [
+            {
+              "uci": "g1h1",
+              "san": "Rxh1",
+              "next": {
+                "anyMove": false,
+                "options": [
+                  {
+                    "uci": "h4h5",
+                    "san": "h5",
+                    "next": {
+                      "anyMove": false,
+                      "options": [
+                        {
+                          "uci": "h1h5",
+                          "san": "Rxh5",
+                          "next": {
+                            "anyMove": false,
+                            "options": [
+                              {
+                                "uci": "a4a5",
+                                "san": "a5",
+                                "next": {
+                                  "anyMove": false,
+                                  "options": [
+                                    {
+                                      "uci": "h5a5",
+                                      "san": "Rxa5",
+                                      "next": {
+                                        "anyMove": false,
+                                        "options": [
+                                          {
+                                            "uci": "e4e5",
+                                            "san": "e5",
+                                            "next": {
+                                              "anyMove": true,
+                                              "options": [
+                                                {
+                                                  "uci": "a5e5",
+                                                  "san": "Rxe5",
+                                                  "next": {
+                                                    "anyMove": false,
+                                                    "options": []
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

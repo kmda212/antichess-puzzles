@@ -23,6 +23,39 @@ function loadPuzzlesFromStorage() {
   catch { return []; }
 }
 
+// Load puzzles from the puzzles/ folder (works when hosted over HTTP/HTTPS).
+// Falls back gracefully to empty array when opened as a local file://.
+async function loadPuzzlesFromFiles() {
+  try {
+    const idxResp = await fetch('puzzles/index.json');
+    if (!idxResp.ok) return [];
+    const filenames = await idxResp.json();
+    const results = await Promise.all(
+      filenames.map(f =>
+        fetch(`puzzles/${f}`)
+          .then(r => r.ok ? r.json() : null)
+          .catch(() => null)
+      )
+    );
+    return results.filter(Boolean);
+  } catch {
+    return [];
+  }
+}
+
+// Merge file puzzles (for hosted/public use) with localStorage puzzles
+// (for local creator use). File puzzles take priority; local-only puzzles
+// are appended so the creator still works without a server.
+async function loadAllPuzzles() {
+  const [filePuzzles, storagePuzzles] = await Promise.all([
+    loadPuzzlesFromFiles(),
+    Promise.resolve(loadPuzzlesFromStorage())
+  ]);
+  const fileIds = new Set(filePuzzles.map(p => p.id));
+  const localOnly = storagePuzzles.filter(p => !fileIds.has(p.id));
+  return [...filePuzzles, ...localOnly];
+}
+
 // ── Tree utilities (mirrors app.js) ──────────────────────────────────────
 function legacyToTree(solution) {
   let node = null;
@@ -502,9 +535,9 @@ function toast(msg, type = 'info') {
 }
 
 // ── Init ──────────────────────────────────────────────────────────────────
-function init() {
+async function init() {
   initDOM();
-  Solver.puzzles = loadPuzzlesFromStorage();
+  Solver.puzzles = await loadAllPuzzles();
   Solver.puzzles.forEach(ensureSolutionTree);
   populateDropdown();
 
