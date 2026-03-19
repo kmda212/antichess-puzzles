@@ -202,10 +202,10 @@ header .spacer { flex: 1; }
 .board-area {
   flex: 1;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   padding: 20px;
-  overflow: hidden;
+  overflow-y: auto;
 }
 
 .board-wrap {
