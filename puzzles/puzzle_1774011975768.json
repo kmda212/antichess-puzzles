@@ -1,0 +1,83 @@
+{
+  "id": "puzzle_1774011975768",
+  "title": "pawn race",
+  "description": "black to play and win",
+  "difficulty": "easy",
+  "startFEN": "8/8/8/1P6/8/2p5/8/8 b - - 0 1",
+  "solution": [
+    {
+      "uci": "c3c2",
+      "san": "c2",
+      "fenAfter": "8/8/8/1P6/8/8/2p5/8 w - - 0 2"
+    },
+    {
+      "uci": "b5b6",
+      "san": "b6",
+      "fenAfter": "8/8/1P6/8/8/8/2p5/8 b - - 0 2"
+    },
+    {
+      "uci": "c2c1r",
+      "san": "c1=R",
+      "fenAfter": "8/8/1P6/8/8/8/8/2r5 w - - 0 3"
+    },
+    {
+      "uci": "b6b7",
+      "san": "b7",
+      "fenAfter": "8/1P6/8/8/8/8/8/2r5 b - - 0 3"
+    },
+    {
+      "uci": "c1c8",
+      "san": "Rc8",
+      "fenAfter": "2r5/1P6/8/8/8/8/8/8 w - - 1 4"
+    }
+  ],
+  "solutionTree": {
+    "anyMove": false,
+    "options": [
+      {
+        "uci": "c3c2",
+        "san": "c2",
+        "next": {
+          "anyMove": false,
+          "options": [
+            {
+              "uci": "b5b6",
+              "san": "b6",
+              "next": {
+                "anyMove": false,
+                "options": [
+                  {
+                    "uci": "c2c1r",
+                    "san": "c1=R",
+                    "next": {
+                      "anyMove": false,
+                      "options": [
+                        {
+                          "uci": "b6b7",
+                          "san": "b7",
+                          "next": {
+                            "anyMove": false,
+                            "options": [
+                              {
+                                "uci": "c1c8",
+                                "san": "Rc8",
+                                "next": {
+                                  "anyMove": false,
+                                  "options": []
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

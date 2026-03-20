@@ -1,0 +1,55 @@
+{
+  "id": "puzzle_1774012081243",
+  "title": "only knight",
+  "description": "white to play and win",
+  "difficulty": "medium",
+  "startFEN": "8/P7/2n5/8/8/8/8/8 w - - 0 1",
+  "solution": [
+    {
+      "uci": "a7a8b",
+      "san": "a8=B",
+      "fenAfter": "B7/8/2n5/8/8/8/8/8 b - - 0 1"
+    },
+    {
+      "uci": "c6b4",
+      "san": "Nb4",
+      "fenAfter": "B7/8/8/8/1n6/8/8/8 w - - 1 2"
+    },
+    {
+      "uci": "a8c6",
+      "san": "Bc6",
+      "fenAfter": "8/8/2B5/8/1n6/8/8/8 b - - 2 2"
+    }
+  ],
+  "solutionTree": {
+    "anyMove": false,
+    "options": [
+      {
+        "uci": "a7a8b",
+        "san": "a8=B",
+        "next": {
+          "anyMove": true,
+          "options": [
+            {
+              "uci": "c6b4",
+              "san": "Nb4",
+              "next": {
+                "anyMove": false,
+                "options": [
+                  {
+                    "uci": "a8c6",
+                    "san": "Bc6",
+                    "next": {
+                      "anyMove": false,
+                      "options": []
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

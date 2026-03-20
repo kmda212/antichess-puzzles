@@ -1,0 +1,97 @@
+{
+  "id": "puzzle_1774015810184",
+  "title": "pawn endgame",
+  "description": "",
+  "difficulty": "medium",
+  "startFEN": "2n1r3/4pk2/7n/8/1P6/3p4/P3N3/8 w - - 0 22",
+  "solution": [
+    {
+      "uci": "b4b5",
+      "san": "b5",
+      "fenAfter": "2n1r3/4pk2/7n/1P6/8/3p4/P3N3/8 b - - 0 22"
+    },
+    {
+      "uci": "d3e2",
+      "san": "dxe2",
+      "fenAfter": "2n1r3/4pk2/7n/1P6/8/8/P3p3/8 w - - 0 23"
+    },
+    {
+      "uci": "b5b6",
+      "san": "b6",
+      "fenAfter": "2n1r3/4pk2/1P5n/8/8/8/P3p3/8 b - - 0 23"
+    },
+    {
+      "uci": "c8b6",
+      "san": "Nxb6",
+      "fenAfter": "4r3/4pk2/1n5n/8/8/8/P3p3/8 w - - 0 24"
+    },
+    {
+      "uci": "a2a4",
+      "san": "a4",
+      "fenAfter": "4r3/4pk2/1n5n/8/P7/8/4p3/8 b - a3 0 24"
+    },
+    {
+      "uci": "b6a4",
+      "san": "Nxa4",
+      "fenAfter": "4r3/4pk2/7n/8/n7/8/4p3/8 w - - 0 25"
+    }
+  ],
+  "solutionTree": {
+    "anyMove": false,
+    "options": [
+      {
+        "uci": "b4b5",
+        "san": "b5",
+        "next": {
+          "anyMove": false,
+          "options": [
+            {
+              "uci": "d3e2",
+              "san": "dxe2",
+              "next": {
+                "anyMove": false,
+                "options": [
+                  {
+                    "uci": "b5b6",
+                    "san": "b6",
+                    "next": {
+                      "anyMove": false,
+                      "options": [
+                        {
+                          "uci": "c8b6",
+                          "san": "Nxb6",
+                          "next": {
+                            "anyMove": false,
+                            "options": [
+                              {
+                                "uci": "a2a4",
+                                "san": "a4",
+                                "next": {
+                                  "anyMove": false,
+                                  "options": [
+                                    {
+                                      "uci": "b6a4",
+                                      "san": "Nxa4",
+                                      "next": {
+                                        "anyMove": false,
+                                        "options": []
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

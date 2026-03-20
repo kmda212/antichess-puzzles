@@ -1,0 +1,19 @@
+[Event "Hourly Antichess Arena"]
+[Site "https://lichess.org/O0iGMGN9"]
+[Date "2026.03.18"]
+[White "gpdkr212"]
+[Black "HanselveGrahambell"]
+[Result "0-1"]
+[Variant "Antichess"]
+
+1. c4 { [%clk 0:01:00] } 1... c6 { [%clk 0:01:00] } 2. a4 { [%clk 0:00:55] } 2... b5 { [%clk 0:00:59] } 3. cxb5 { [%clk 0:00:54] } 3... cxb5 { [%clk 0:00:59] } 4. axb5 { [%clk 0:00:54] } 4... Qa5 { [%clk 0:00:58] } 5. Rxa5 { [%clk 0:00:52] } 5... Na6 { [%clk 0:00:58] } 0-1
+
+[Event "Hourly Antichess Arena"]
+[Site "https://lichess.org/ABC12345"]
+[Date "2026.03.18"]
+[White "playerA"]
+[Black "playerB"]
+[Result "1-0"]
+[Variant "Antichess"]
+
+1. e3 { [%clk 0:01:00] } 1... d5 { [%clk 0:01:00] } 2. Bb5+ { [%clk 0:00:58] } 2... c6 { [%clk 0:00:59] } 3. Bxc6+ { [%clk 0:00:57] } 3... bxc6 { [%clk 0:00:58] } 4. Qg4 { [%clk 0:00:55] } 4... Bxg4 { [%clk 0:00:57] } 1-0

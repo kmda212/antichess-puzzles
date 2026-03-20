@@ -1,0 +1,178 @@
+{
+  "id": "puzzle_1774016011217",
+  "title": "bishop knight play",
+  "description": "",
+  "difficulty": "medium",
+  "startFEN": "6nr/3k2pp/4p3/8/7P/8/5P2/2B3Nb w - - 0 19",
+  "solution": [
+    {
+      "uci": "g1f3",
+      "san": "Nf3",
+      "fenAfter": "6nr/3k2pp/4p3/8/7P/5N2/5P2/2B4b b - - 1 19"
+    },
+    {
+      "uci": "h1f3",
+      "san": "Bxf3",
+      "fenAfter": "6nr/3k2pp/4p3/8/7P/5b2/5P2/2B5 w - - 0 20"
+    },
+    {
+      "uci": "h4h5",
+      "san": "h5",
+      "fenAfter": "6nr/3k2pp/4p3/7P/8/5b2/5P2/2B5 b - - 0 20"
+    },
+    {
+      "uci": "f3h5",
+      "san": "Bxh5",
+      "fenAfter": "6nr/3k2pp/4p3/7b/8/8/5P2/2B5 w - - 0 21"
+    },
+    {
+      "uci": "f2f3",
+      "san": "f3",
+      "fenAfter": "6nr/3k2pp/4p3/7b/8/5P2/8/2B5 b - - 0 21"
+    },
+    {
+      "uci": "h5f3",
+      "san": "Bxf3",
+      "fenAfter": "6nr/3k2pp/4p3/8/8/5b2/8/2B5 w - - 0 22"
+    },
+    {
+      "uci": "c1h6",
+      "san": "Bh6",
+      "fenAfter": "6nr/3k2pp/4p2B/8/8/5b2/8/8 b - - 1 22"
+    },
+    {
+      "uci": "g7h6",
+      "san": "gxh6",
+      "fenAfter": "6nr/3k3p/4p2p/8/8/5b2/8/8 w - - 0 23"
+    }
+  ],
+  "solutionTree": {
+    "anyMove": false,
+    "options": [
+      {
+        "uci": "g1f3",
+        "san": "Nf3",
+        "next": {
+          "anyMove": false,
+          "options": [
+            {
+              "uci": "h1f3",
+              "san": "Bxf3",
+              "next": {
+                "anyMove": false,
+                "options": [
+                  {
+                    "uci": "h4h5",
+                    "san": "h5",
+                    "next": {
+                      "anyMove": false,
+                      "options": [
+                        {
+                          "uci": "f3h5",
+                          "san": "Bxh5",
+                          "next": {
+                            "anyMove": false,
+                            "options": [
+                              {
+                                "uci": "f2f3",
+                                "san": "f3",
+                                "next": {
+                                  "anyMove": false,
+                                  "options": [
+                                    {
+                                      "uci": "h5f3",
+                                      "san": "Bxf3",
+                                      "next": {
+                                        "anyMove": false,
+                                        "options": [
+                                          {
+                                            "uci": "c1h6",
+                                            "san": "Bh6",
+                                            "next": {
+                                              "anyMove": true,
+                                              "options": [
+                                                {
+                                                  "uci": "g7h6",
+                                                  "san": "gxh6",
+                                                  "next": {
+                                                    "anyMove": false,
+                                                    "options": []
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "uci": "c1h6",
+                    "san": "Bh6",
+                    "next": {
+                      "anyMove": true,
+                      "options": [
+                        {
+                          "uci": "g8h6",
+                          "san": "Nxh6",
+                          "next": {
+                            "anyMove": false,
+                            "options": [
+                              {
+                                "uci": "h4h5",
+                                "san": "h5",
+                                "next": {
+                                  "anyMove": false,
+                                  "options": [
+                                    {
+                                      "uci": "f3h5",
+                                      "san": "Bxh5",
+                                      "next": {
+                                        "anyMove": false,
+                                        "options": [
+                                          {
+                                            "uci": "f2f3",
+                                            "san": "f3",
+                                            "next": {
+                                              "anyMove": false,
+                                              "options": [
+                                                {
+                                                  "uci": "h5f3",
+                                                  "san": "Bxf3",
+                                                  "next": {
+                                                    "anyMove": false,
+                                                    "options": []
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

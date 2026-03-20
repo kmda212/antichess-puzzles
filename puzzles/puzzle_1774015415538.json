@@ -1,0 +1,125 @@
+{
+  "id": "puzzle_1774015415538",
+  "title": "rook on a roll",
+  "description": "",
+  "difficulty": "medium",
+  "startFEN": "rn6/p6R/4p3/8/2P5/4P3/5P2/8 b - - 0 15",
+  "solution": [
+    {
+      "uci": "b8d7",
+      "san": "Nd7",
+      "fenAfter": "r7/p2n3R/4p3/8/2P5/4P3/5P2/8 w - - 1 16"
+    },
+    {
+      "uci": "h7d7",
+      "san": "Rxd7",
+      "fenAfter": "r7/p2R4/4p3/8/2P5/4P3/5P2/8 b - - 0 16"
+    },
+    {
+      "uci": "a8e8",
+      "san": "Re8",
+      "fenAfter": "4r3/p2R4/4p3/8/2P5/4P3/5P2/8 w - - 1 17"
+    },
+    {
+      "uci": "d7a7",
+      "san": "Rxa7",
+      "fenAfter": "4r3/R7/4p3/8/2P5/4P3/5P2/8 b - - 0 17"
+    },
+    {
+      "uci": "e8e7",
+      "san": "Re7",
+      "fenAfter": "8/R3r3/4p3/8/2P5/4P3/5P2/8 w - - 1 18"
+    },
+    {
+      "uci": "a7e7",
+      "san": "Rxe7",
+      "fenAfter": "8/4R3/4p3/8/2P5/4P3/5P2/8 b - - 0 18"
+    },
+    {
+      "uci": "e6e5",
+      "san": "e5",
+      "fenAfter": "8/4R3/8/4p3/2P5/4P3/5P2/8 w - - 0 19"
+    },
+    {
+      "uci": "e7e5",
+      "san": "Rxe5",
+      "fenAfter": "8/8/8/4R3/2P5/4P3/5P2/8 b - - 0 19"
+    }
+  ],
+  "solutionTree": {
+    "anyMove": false,
+    "options": [
+      {
+        "uci": "b8d7",
+        "san": "Nd7",
+        "next": {
+          "anyMove": false,
+          "options": [
+            {
+              "uci": "h7d7",
+              "san": "Rxd7",
+              "next": {
+                "anyMove": false,
+                "options": [
+                  {
+                    "uci": "a8e8",
+                    "san": "Re8",
+                    "next": {
+                      "anyMove": false,
+                      "options": [
+                        {
+                          "uci": "d7a7",
+                          "san": "Rxa7",
+                          "next": {
+                            "anyMove": false,
+                            "options": [
+                              {
+                                "uci": "e8e7",
+                                "san": "Re7",
+                                "next": {
+                                  "anyMove": false,
+                                  "options": [
+                                    {
+                                      "uci": "a7e7",
+                                      "san": "Rxe7",
+                                      "next": {
+                                        "anyMove": false,
+                                        "options": [
+                                          {
+                                            "uci": "e6e5",
+                                            "san": "e5",
+                                            "next": {
+                                              "anyMove": false,
+                                              "options": [
+                                                {
+                                                  "uci": "e7e5",
+                                                  "san": "Rxe5",
+                                                  "next": {
+                                                    "anyMove": false,
+                                                    "options": []
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

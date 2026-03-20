@@ -1,0 +1,83 @@
+{
+  "id": "puzzle_1774015647686",
+  "title": "clever queen",
+  "description": "",
+  "difficulty": "medium",
+  "startFEN": "6Q1/p6p/P3p3/8/8/8/2q5/1N5R w - - 0 17",
+  "solution": [
+    {
+      "uci": "g8e6",
+      "san": "Qxe6",
+      "fenAfter": "8/p6p/P3Q3/8/8/8/2q5/1N5R b - - 0 17"
+    },
+    {
+      "uci": "c2b1",
+      "san": "Qxb1",
+      "fenAfter": "8/p6p/P3Q3/8/8/8/8/1q5R w - - 0 18"
+    },
+    {
+      "uci": "h1h7",
+      "san": "Rxh7",
+      "fenAfter": "8/p6R/P3Q3/8/8/8/8/1q6 b - - 0 18"
+    },
+    {
+      "uci": "b1h7",
+      "san": "Qxh7",
+      "fenAfter": "8/p6q/P3Q3/8/8/8/8/8 w - - 0 19"
+    },
+    {
+      "uci": "e6h6",
+      "san": "Qh6",
+      "fenAfter": "8/p6q/P6Q/8/8/8/8/8 b - - 1 19"
+    }
+  ],
+  "solutionTree": {
+    "anyMove": false,
+    "options": [
+      {
+        "uci": "g8e6",
+        "san": "Qxe6",
+        "next": {
+          "anyMove": false,
+          "options": [
+            {
+              "uci": "c2b1",
+              "san": "Qxb1",
+              "next": {
+                "anyMove": false,
+                "options": [
+                  {
+                    "uci": "h1h7",
+                    "san": "Rxh7",
+                    "next": {
+                      "anyMove": false,
+                      "options": [
+                        {
+                          "uci": "b1h7",
+                          "san": "Qxh7",
+                          "next": {
+                            "anyMove": false,
+                            "options": [
+                              {
+                                "uci": "e6h6",
+                                "san": "Qh6",
+                                "next": {
+                                  "anyMove": false,
+                                  "options": []
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
