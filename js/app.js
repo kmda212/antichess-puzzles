@@ -465,7 +465,7 @@ function showPromoModal(moves, color) {
     img.style.cssText = 'width:52px;height:52px;pointer-events:none';
     btn.appendChild(img);
     btn.title = pt.toUpperCase();
-    btn.addEventListener('click', () => { hidePromoModal(); executeMove(_pendingPromMoves.find(m => m.promotion === pt)); });
+    btn.addEventListener('click', () => { const move = _pendingPromMoves.find(m => m.promotion === pt); hidePromoModal(); executeMove(move); });
     choices.appendChild(btn);
   });
   D.promoModal.classList.add('visible');
