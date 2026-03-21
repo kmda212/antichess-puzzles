@@ -1,0 +1,69 @@
+{
+  "id": "puzzle_1774017431815",
+  "title": "rook takes all",
+  "description": "",
+  "difficulty": "easy",
+  "startFEN": "3B4/8/8/7p/3P3P/8/8/r7 w - - 0 27",
+  "solution": [
+    {
+      "uci": "d8a5",
+      "san": "Ba5",
+      "fenAfter": "8/8/8/B6p/3P3P/8/8/r7 b - - 1 27"
+    },
+    {
+      "uci": "a1a5",
+      "san": "Rxa5",
+      "fenAfter": "8/8/8/r6p/3P3P/8/8/8 w - - 0 28"
+    },
+    {
+      "uci": "d4d5",
+      "san": "d5",
+      "fenAfter": "8/8/8/r2P3p/7P/8/8/8 b - - 0 28"
+    },
+    {
+      "uci": "a5d5",
+      "san": "Rxd5",
+      "fenAfter": "8/8/8/3r3p/7P/8/8/8 w - - 0 29"
+    }
+  ],
+  "solutionTree": {
+    "anyMove": false,
+    "options": [
+      {
+        "uci": "d8a5",
+        "san": "Ba5",
+        "next": {
+          "anyMove": false,
+          "options": [
+            {
+              "uci": "a1a5",
+              "san": "Rxa5",
+              "next": {
+                "anyMove": false,
+                "options": [
+                  {
+                    "uci": "d4d5",
+                    "san": "d5",
+                    "next": {
+                      "anyMove": false,
+                      "options": [
+                        {
+                          "uci": "a5d5",
+                          "san": "Rxd5",
+                          "next": {
+                            "anyMove": false,
+                            "options": []
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

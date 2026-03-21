@@ -1,0 +1,125 @@
+{
+  "id": "puzzle_1774017209586",
+  "title": "knight rook",
+  "description": "",
+  "difficulty": "medium",
+  "startFEN": "6n1/3N4/r7/2p4p/8/4P3/1P1P1PPP/2B1K1NR b - - 0 16",
+  "solution": [
+    {
+      "uci": "g8h6",
+      "san": "Nh6",
+      "fenAfter": "8/3N4/r6n/2p4p/8/4P3/1P1P1PPP/2B1K1NR w - - 1 17"
+    },
+    {
+      "uci": "d7c5",
+      "san": "Nxc5",
+      "fenAfter": "8/8/r6n/2N4p/8/4P3/1P1P1PPP/2B1K1NR b - - 0 17"
+    },
+    {
+      "uci": "h6g4",
+      "san": "Ng4",
+      "fenAfter": "8/8/r7/2N4p/6n1/4P3/1P1P1PPP/2B1K1NR w - - 1 18"
+    },
+    {
+      "uci": "c5a6",
+      "san": "Nxa6",
+      "fenAfter": "8/8/N7/7p/6n1/4P3/1P1P1PPP/2B1K1NR b - - 0 18"
+    },
+    {
+      "uci": "g4h2",
+      "san": "Nxh2",
+      "fenAfter": "8/8/N7/7p/8/4P3/1P1P1PPn/2B1K1NR w - - 0 19"
+    },
+    {
+      "uci": "h1h2",
+      "san": "Rxh2",
+      "fenAfter": "8/8/N7/7p/8/4P3/1P1P1PPR/2B1K1N1 b - - 0 19"
+    },
+    {
+      "uci": "h5h4",
+      "san": "h4",
+      "fenAfter": "8/8/N7/8/7p/4P3/1P1P1PPR/2B1K1N1 w - - 0 20"
+    },
+    {
+      "uci": "h2h4",
+      "san": "Rxh4",
+      "fenAfter": "8/8/N7/8/7R/4P3/1P1P1PP1/2B1K1N1 b - - 0 20"
+    }
+  ],
+  "solutionTree": {
+    "anyMove": false,
+    "options": [
+      {
+        "uci": "g8h6",
+        "san": "Nh6",
+        "next": {
+          "anyMove": false,
+          "options": [
+            {
+              "uci": "d7c5",
+              "san": "Nxc5",
+              "next": {
+                "anyMove": false,
+                "options": [
+                  {
+                    "uci": "h6g4",
+                    "san": "Ng4",
+                    "next": {
+                      "anyMove": false,
+                      "options": [
+                        {
+                          "uci": "c5a6",
+                          "san": "Nxa6",
+                          "next": {
+                            "anyMove": false,
+                            "options": [
+                              {
+                                "uci": "g4h2",
+                                "san": "Nxh2",
+                                "next": {
+                                  "anyMove": false,
+                                  "options": [
+                                    {
+                                      "uci": "h1h2",
+                                      "san": "Rxh2",
+                                      "next": {
+                                        "anyMove": false,
+                                        "options": [
+                                          {
+                                            "uci": "h5h4",
+                                            "san": "h4",
+                                            "next": {
+                                              "anyMove": false,
+                                              "options": [
+                                                {
+                                                  "uci": "h2h4",
+                                                  "san": "Rxh4",
+                                                  "next": {
+                                                    "anyMove": false,
+                                                    "options": []
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

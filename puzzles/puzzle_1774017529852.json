@@ -1,0 +1,97 @@
+{
+  "id": "puzzle_1774017529852",
+  "title": "bad move from black",
+  "description": "",
+  "difficulty": "medium",
+  "startFEN": "r1k4r/p4p2/6np/7P/7K/p7/4N3/8 w - - 4 23",
+  "solution": [
+    {
+      "uci": "h5g6",
+      "san": "hxg6",
+      "fenAfter": "r1k4r/p4p2/6Pp/8/7K/p7/4N3/8 b - - 0 23"
+    },
+    {
+      "uci": "f7g6",
+      "san": "fxg6",
+      "fenAfter": "r1k4r/p7/6pp/8/7K/p7/4N3/8 w - - 0 24"
+    },
+    {
+      "uci": "h4g5",
+      "san": "Kg5",
+      "fenAfter": "r1k4r/p7/6pp/6K1/8/p7/4N3/8 b - - 1 24"
+    },
+    {
+      "uci": "h6g5",
+      "san": "hxg5",
+      "fenAfter": "r1k4r/p7/6p1/6p1/8/p7/4N3/8 w - - 0 25"
+    },
+    {
+      "uci": "e2f4",
+      "san": "Nf4",
+      "fenAfter": "r1k4r/p7/6p1/6p1/5N2/p7/8/8 b - - 1 25"
+    },
+    {
+      "uci": "g5f4",
+      "san": "gxf4",
+      "fenAfter": "r1k4r/p7/6p1/8/5p2/p7/8/8 w - - 0 26"
+    }
+  ],
+  "solutionTree": {
+    "anyMove": false,
+    "options": [
+      {
+        "uci": "h5g6",
+        "san": "hxg6",
+        "next": {
+          "anyMove": false,
+          "options": [
+            {
+              "uci": "f7g6",
+              "san": "fxg6",
+              "next": {
+                "anyMove": false,
+                "options": [
+                  {
+                    "uci": "h4g5",
+                    "san": "Kg5",
+                    "next": {
+                      "anyMove": false,
+                      "options": [
+                        {
+                          "uci": "h6g5",
+                          "san": "hxg5",
+                          "next": {
+                            "anyMove": false,
+                            "options": [
+                              {
+                                "uci": "e2f4",
+                                "san": "Nf4",
+                                "next": {
+                                  "anyMove": false,
+                                  "options": [
+                                    {
+                                      "uci": "g5f4",
+                                      "san": "gxf4",
+                                      "next": {
+                                        "anyMove": false,
+                                        "options": []
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
